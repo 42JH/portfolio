@@ -2,7 +2,7 @@
 
 일상 속에서 쓰이는 AI를 만드는 AI 엔지니어 이재훈의 포트폴리오입니다.
 
-**[📄 포트폴리오 PDF 보기](Portfolio_LeeJaehoon.pdf)**
+**[📄 포트폴리오 PDF 보기](Portfolio_LeeJaehun.pdf)**
 
 | 프로젝트 | 소개 |
 | --- | --- |
