@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이재훈 · Everyday AI</title>
+<meta name="description" content="일상 속에서 쓰이는 AI를 만드는 AI 엔지니어 이재훈. MODERA · SIA · Dver·Dva · AirSim 레이스 전국 우승.">
+<meta property="og:title" content="이재훈 · Everyday AI">
+<meta property="og:description" content="스크린샷, 화면 속 '이거', 택배 접수 전화. 매일 하는 일에 AI를 붙이고, 정말 나아졌는지 숫자로 확인합니다.">
+<meta property="og:image" content="img/sia.webp">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.css">
+<style>
+:root{
+  --bg:#0a0a0b; --bg2:#121214; --ink:#efede6; --muted:#8b8a85; --dim:#4a4a48;
+  --line:rgba(239,237,230,.12); --accent:#ff5a1f; --accent-ink:#0a0a0b;
+  --gut:clamp(16px,4vw,48px);
+  --display:"Archivo","Pretendard Variable",sans-serif;
+  --sans:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --serif:"Instrument Serif",Georgia,serif;
+}
+:root.lightmode{--bg:#efede6;--bg2:#e4e2da;--ink:#0a0a0b;--muted:#5d5c57;--dim:#a9a79f;--line:rgba(10,10,11,.14)}
+body{transition:background-color .7s ease,color .7s ease}
+.it{font-family:var(--serif);font-style:italic;font-weight:400;text-transform:none;font-variation-settings:normal;letter-spacing:-.02em}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+  -webkit-font-smoothing:antialiased;word-break:keep-all;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+::selection{background:var(--accent);color:var(--accent-ink)}
+.mono{font-family:var(--mono)}
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.accent{color:var(--accent)}
+
+/* ---------- cursor (SIA gaze) ---------- */
+.gaze{position:fixed;left:0;top:0;z-index:100;pointer-events:none;opacity:0;transition:opacity .3s}
+.gaze.on{opacity:1}
+.gaze .ring{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border:1px solid var(--accent);border-radius:50%;
+  transition:width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),margin .35s cubic-bezier(.2,.8,.2,1),border-radius .35s}
+.gaze .ring::before,.gaze .ring::after{content:"";position:absolute;background:var(--accent);left:50%;top:50%}
+.gaze .ring::before{width:1px;height:10px;margin:-5px 0 0 0}
+.gaze .ring::after{width:10px;height:1px;margin:0 0 0 -5px}
+.gaze .read{position:absolute;left:30px;top:16px;font-family:var(--mono);font-size:10px;color:var(--accent);white-space:nowrap;letter-spacing:.06em}
+.gaze.target .ring{width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:10px}
+.gaze.target .read{left:50px;top:30px}
+.dot{position:fixed;left:0;top:0;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:var(--ink);z-index:101;pointer-events:none;opacity:0}
+.dot.on{opacity:1}
+@media (pointer:fine){ body.has-gaze, body.has-gaze a, body.has-gaze summary{cursor:none} }
+
+/* ---------- loader ---------- */
+.loader{position:fixed;inset:0;z-index:200;background:var(--bg);display:grid;place-items:center}
+.loader .grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(40px,9vw,120px)}
+.loader .p{width:10px;height:10px;border-radius:50%;border:1px solid var(--dim);transition:.2s}
+.loader .p.hit{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 8px rgba(255,90,31,.12)}
+.loader .cap{position:absolute;bottom:var(--gut);left:var(--gut);right:var(--gut);display:flex;justify-content:space-between}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:18px var(--gut);mix-blend-mode:difference;color:#fff}
+.nav .brand{font-family:var(--display);font-weight:800;font-variation-settings:"wdth" 110;letter-spacing:-.01em;font-size:15px}
+.nav ul{display:flex;gap:28px;list-style:none}
+.nav ul a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.nav ul a:hover{color:var(--accent)}
+.nav .pdf{font-family:var(--mono);font-size:11px;letter-spacing:.14em;border:1px solid #fff;border-radius:999px;padding:7px 14px}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--gut) clamp(24px,4vh,48px);overflow:hidden}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%}
+.hud{position:absolute;top:76px;left:var(--gut);right:var(--gut);display:flex;justify-content:space-between;gap:24px;pointer-events:none}
+.hud div{display:grid;gap:4px}
+.hud b{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--ink);letter-spacing:.06em}
+.hero h1{position:relative;font-family:var(--display);font-weight:850;font-variation-settings:"wdth" 125;
+  font-size:clamp(44px,13.4vw,270px);line-height:.82;letter-spacing:-.045em;text-transform:uppercase;pointer-events:none}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em;white-space:nowrap}
+.hero h1 .ch{display:inline-block}
+.hero h1 .ai{color:var(--accent);font-family:var(--serif);font-style:italic;font-weight:400;text-transform:none;font-variation-settings:normal;letter-spacing:-.03em;font-size:1.12em;line-height:.7}
+.hero h1 .ln2{display:flex;align-items:flex-end;gap:.25em}
+.hero h1 .note{font-family:var(--mono);font-size:max(11px,.065em);font-weight:400;line-height:1.5;letter-spacing:.04em;text-transform:none;color:var(--muted);padding-bottom:.2em;font-variation-settings:normal;white-space:normal;max-width:22em}
+.hero h1 .note b{color:var(--ink);font-weight:600}
+.hero .sub{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:clamp(20px,3vh,36px);
+  padding-top:20px;border-top:1px solid var(--line)}
+.hero .sub p{font-size:clamp(16px,1.6vw,22px);max-width:620px;line-height:1.5}
+.hero .sub p b{font-weight:700}
+.hero .sub .label{white-space:nowrap}
+
+/* ---------- marquee ---------- */
+.marquee{background:var(--accent);color:var(--accent-ink);overflow:hidden;white-space:nowrap;padding:16px 0;border-block:1px solid var(--accent)}
+.marquee .track{display:inline-flex;animation:mq 38s linear infinite}
+.marquee span{font-family:var(--display);font-variation-settings:"wdth" 100;font-weight:700;font-size:clamp(18px,2vw,26px);padding:0 22px;letter-spacing:-.01em}
+.marquee span.m{font-family:var(--mono);font-weight:600;font-size:clamp(15px,1.6vw,20px)}
+.marquee i{font-style:normal;opacity:.5}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ---------- statement ---------- */
+.statement{padding:clamp(100px,18vh,200px) var(--gut)}
+.statement .label{margin-bottom:28px}
+.statement p{font-size:clamp(34px,6vw,96px);line-height:1.15;letter-spacing:-.035em;font-weight:600;max-width:1300px}
+.statement p .w{display:inline}
+.statement p em{font-style:normal;color:var(--accent)}
+.statement p .w.cur::after{content:"";display:inline-block;width:.5em;height:.9em;margin-left:.12em;vertical-align:-.08em;background:var(--accent);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.statement .meta-row{display:flex;justify-content:space-between;margin-bottom:28px}
+
+/* ---------- projects ---------- */
+.projects{padding:0 var(--gut)}
+.sec-top{display:flex;justify-content:space-between;align-items:flex-end;padding:28px 0;border-top:1px solid var(--line)}
+.sec-top h2{font-family:var(--display);font-variation-settings:"wdth" 125;font-weight:800;font-size:clamp(40px,7vw,110px);line-height:.9;letter-spacing:-.04em;text-transform:uppercase}
+.index{list-style:none;border-top:1px solid var(--line);margin-bottom:clamp(40px,8vh,90px)}
+.index .head{display:grid;grid-template-columns:80px 1fr 200px 140px 60px;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.index a{display:grid;grid-template-columns:80px 1fr 200px 140px 60px;align-items:center;gap:16px;padding:6px 0;border-bottom:1px solid var(--line);overflow:hidden}
+.index b{font-family:var(--display);font-variation-settings:"wdth" 125;font-weight:800;font-size:clamp(34px,6.4vw,104px);line-height:1;letter-spacing:-.045em;transition:transform .5s cubic-bezier(.2,.8,.2,1),color .3s}
+.index a:hover b{transform:translateX(24px);color:var(--accent)}
+.index a:hover .label{color:var(--ink)}
+.preview{position:fixed;left:0;top:0;z-index:40;width:340px;aspect-ratio:16/10;margin:-110px 0 0 -170px;border-radius:6px;overflow:hidden;pointer-events:none;opacity:0;transform:scale(.6);transition:opacity .3s,transform .4s cubic-bezier(.2,.8,.2,1)}
+.preview.on{opacity:1;transform:scale(1)}
+.preview img{width:100%;height:100%;object-fit:cover}
+@media (max-width:900px){.index a,.index .head{grid-template-columns:36px 1fr 60px}.index a .label:nth-child(3),.index a .label:nth-child(4),.index .head .label:nth-child(3),.index .head .label:nth-child(4){display:none}}
+.proj{display:grid;grid-template-columns:120px 1fr;gap:0 clamp(16px,3vw,48px);padding:clamp(60px,10vh,110px) 0;border-top:1px solid var(--line)}
+.proj .idx{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.proj .idx b{display:block;font-family:var(--display);font-variation-settings:"wdth" 62;font-weight:300;font-size:clamp(56px,8vw,120px);line-height:.85;color:var(--ink);letter-spacing:-.04em}
+.proj .scene{font-size:clamp(18px,1.9vw,26px);color:var(--muted);letter-spacing:-.02em;margin-bottom:14px}
+.proj h3{font-family:var(--display);font-variation-settings:"wdth" 125;font-weight:800;font-size:clamp(48px,8.4vw,150px);line-height:.88;letter-spacing:-.045em;text-transform:uppercase}
+.proj .meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin:22px 0 36px}
+.proj .meta .award{color:var(--accent)}
+.proj .body{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,64px);align-items:start}
+.shot{position:relative;overflow:hidden;border-radius:6px;background:var(--bg2);aspect-ratio:16/10}
+.shot img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);filter:grayscale(1) contrast(1.05);transition:filter .8s}
+.shot:hover img,.proj.seen .shot img{filter:none}
+.slices{position:absolute;inset:0;display:flex;pointer-events:none;z-index:2}
+.slices i{flex:1;background:var(--bg);transform-origin:50% 0}
+.pager{position:fixed;left:var(--gut);bottom:24px;z-index:45;display:flex;gap:14px;align-items:center;opacity:0;transform:translateY(10px);transition:.4s;pointer-events:none;mix-blend-mode:difference;color:#fff}
+.pager.on{opacity:1;transform:none}
+.pager .bars{display:flex;gap:4px}
+.pager .bars i{width:18px;height:2px;background:rgba(255,255,255,.3);transition:background .3s,width .3s}
+.pager .bars i.on{background:#ff5a1f;width:36px}
+@media (max-width:900px){.pager{display:none}}
+.shot .tagl{position:absolute;left:12px;top:12px;background:rgba(10,10,11,.7);backdrop-filter:blur(6px);padding:5px 9px;border-radius:4px}
+.what{font-size:clamp(16px,1.3vw,18px);line-height:1.65}
+.what .role{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--accent);margin-bottom:10px}
+.nums{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);margin-top:28px}
+.num{padding:18px 0 16px;border-bottom:1px solid var(--line)}
+.num:nth-child(odd){padding-right:16px;border-right:1px solid var(--line)}
+.num:nth-child(even){padding-left:16px}
+.num .v{font-family:var(--display);font-variation-settings:"wdth" 100;font-weight:700;font-size:clamp(30px,3vw,46px);line-height:1;letter-spacing:-.04em;white-space:nowrap}
+.num .v .from{color:var(--dim);font-weight:400}
+.num .v .ar{color:var(--dim);font-weight:300;margin:0 .12em}
+.num .k{font-size:13px;color:var(--muted);margin-top:8px}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:10px 16px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:.25s}
+.pill:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pill.hot{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.pill.hot:hover{background:var(--ink);border-color:var(--ink)}
+
+/* case file */
+details.case{grid-column:1/-1;margin-top:40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+details.case summary{list-style:none;display:flex;justify-content:space-between;align-items:center;padding:18px 0;cursor:pointer}
+details.case summary::-webkit-details-marker{display:none}
+details.case summary .label{color:var(--ink)}
+details.case summary .plus{font-family:var(--mono);font-size:18px;transition:transform .3s;color:var(--accent)}
+details.case[open] summary .plus{transform:rotate(45deg)}
+.case-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);margin-bottom:24px}
+.case-grid div{background:var(--bg);padding:20px 20px 24px 0}
+.case-grid div + div{padding-left:20px}
+.case-grid .label{display:block;margin-bottom:10px;color:var(--accent)}
+.case-grid p{font-size:15px;line-height:1.65;color:var(--ink)}
+
+/* minis */
+.minis{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.mini{padding:clamp(40px,6vh,72px) 0}
+.mini:first-child{padding-right:clamp(16px,3vw,48px);border-right:1px solid var(--line)}
+.mini:last-child{padding-left:clamp(16px,3vw,48px)}
+.mini .big{font-family:var(--display);font-variation-settings:"wdth" 125;font-weight:850;font-size:clamp(64px,10vw,170px);line-height:.85;letter-spacing:-.05em}
+.mini .big small{font-size:.32em;color:var(--muted);font-weight:500;letter-spacing:-.02em}
+.mini h4{font-size:clamp(20px,2vw,28px);letter-spacing:-.03em;margin:22px 0 8px}
+.mini p{color:var(--muted);max-width:460px}
+
+/* ---------- principles ---------- */
+.how{--bg:#efede6;--bg2:#e4e2da;--ink:#0a0a0b;--muted:#5d5c57;--line:rgba(10,10,11,.14);padding:clamp(100px,16vh,180px) var(--gut);background:var(--bg);color:var(--ink)}
+.how .label{color:#6d6c67}
+.how h2{font-family:var(--display);font-variation-settings:"wdth" 125;font-weight:800;font-size:clamp(40px,7vw,110px);line-height:.9;letter-spacing:-.04em;text-transform:uppercase;margin:16px 0 clamp(48px,8vh,90px)}
+.how .cols{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(10,10,11,.15)}
+.how .col{padding:28px clamp(12px,2vw,32px) 0 0}
+.how .col + .col{padding-left:clamp(12px,2vw,32px);border-left:1px solid rgba(10,10,11,.15)}
+.how .col .n{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.how .col h3{font-size:clamp(22px,2.2vw,32px);letter-spacing:-.035em;line-height:1.2;margin:18px 0 14px}
+.how .col p{color:#55544f;font-size:15.5px}
+
+/* ---------- timeline ---------- */
+.tl{padding:clamp(80px,14vh,160px) var(--gut) 0}
+.tl ol{list-style:none}
+.tl li{display:grid;grid-template-columns:200px 1fr auto;gap:24px;align-items:baseline;padding:26px 0;border-top:1px solid var(--line);transition:padding .35s,background .35s}
+.tl li:last-child{border-bottom:1px solid var(--line)}
+.tl li:hover{padding-left:16px;padding-right:16px;background:var(--bg2)}
+.tl li b{font-size:clamp(20px,2.4vw,34px);letter-spacing:-.035em;font-weight:700}
+.tl li span{color:var(--muted);text-align:right}
+.tl li .badge{color:var(--accent)}
+
+/* ---------- skills ---------- */
+.skills{padding:clamp(80px,14vh,160px) var(--gut)}
+.spec{display:grid;grid-template-columns:200px 1fr;border-top:1px solid var(--line)}
+.spec dt,.spec dd{padding:22px 0;border-bottom:1px solid var(--line)}
+.spec dd{font-size:clamp(17px,1.6vw,22px);letter-spacing:-.02em;line-height:1.55}
+.spec dd em{font-style:normal;color:var(--accent)}
+.spec dd i{font-style:normal;color:var(--dim);margin:0 .4em}
+
+/* ---------- contact ---------- */
+.contact{position:relative;padding:clamp(100px,18vh,200px) var(--gut) 32px;border-top:1px solid var(--line);overflow:hidden}
+.contact .big{font-family:var(--display);font-variation-settings:"wdth" 125;font-weight:850;font-size:clamp(40px,9.6vw,190px);line-height:.85;letter-spacing:-.05em;text-transform:uppercase;display:block;white-space:nowrap}
+.contact .big:hover{color:var(--accent)}
+.contact .closing{font-size:clamp(20px,2.4vw,34px);line-height:1.5;letter-spacing:-.03em;font-weight:500;max-width:980px;margin:24px 0 clamp(48px,8vh,96px);color:var(--muted)}
+.contact .closing em{font-style:normal;color:var(--ink)}
+.contact .mail{display:inline-block;margin-top:28px;font-size:clamp(20px,2.6vw,40px);letter-spacing:-.03em;border-bottom:1px solid var(--line);padding-bottom:4px;transition:.3s}
+.contact .mail:hover{color:var(--accent);border-color:var(--accent)}
+.contact .links{margin-top:36px}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(80px,14vh,160px);padding-top:20px;border-top:1px solid var(--line)}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .nav ul{display:none}
+  .hud .hide-m{display:none}
+  .hero .sub{flex-direction:column;align-items:flex-start}
+  .proj{grid-template-columns:1fr}
+  .proj .idx{margin-bottom:20px}
+  .proj .idx b{display:inline;font-size:56px}
+  .proj .body{grid-template-columns:1fr}
+  .case-grid{grid-template-columns:1fr 1fr}
+  .case-grid div,.case-grid div + div{padding:18px 16px 20px 0}
+  .case-grid div:nth-child(even){padding-left:16px}
+  .minis{grid-template-columns:1fr}
+  .mini:first-child{padding-right:0;border-right:0;border-bottom:1px solid var(--line)}
+  .mini:last-child{padding-left:0}
+  .how .cols{grid-template-columns:1fr}
+  .how .col + .col{padding-left:0;border-left:0;border-top:1px solid rgba(10,10,11,.15);margin-top:28px}
+  .tl li{grid-template-columns:1fr;gap:6px}
+  .tl li span{text-align:left}
+  .spec{grid-template-columns:1fr}
+  .spec dt{border-bottom:0;padding-bottom:0}
+}
+@media (max-width:520px){
+  .case-grid{grid-template-columns:1fr}
+  .case-grid div,.case-grid div + div,.case-grid div:nth-child(even){padding:16px 0}
+  .num .v{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .marquee .track{animation:none}
+  .shot img{transform:none}
+}
+@media print{
+  .nav,.gaze,.dot,.loader,.hero canvas,.marquee,.links,details.case summary .plus{display:none!important}
+  html,body,.how{background:#fff;color:#000}
+  details.case > *{display:block}
+  .proj,.mini,.how .col{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="#top" data-target>LEE JAEHOON</a>
+  <ul>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#how">Approach</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="pdf" href="Portfolio_LeeJaehoon.pdf" download data-target>PDF ↓</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="hud">
+    <div><span class="label">AI Engineer</span><b>SSAFY 15th · Gumi</b></div>
+    <div class="hide-m"><span class="label">Gaze</span><b id="hud-xy">x 0000 · y 0000</b></div>
+    <div class="hide-m"><span class="label">Local time</span><b id="hud-time">KST --:--:--</b></div>
+    <div style="text-align:right"><span class="label">Status</span><b><span class="accent">●</span> Open to work</b></div>
+  </div>
+
+  <h1 aria-label="Everyday AI">
+    <span class="ln" aria-hidden="true"><span class="w">Everyday</span></span>
+    <span class="ln ln2" aria-hidden="true"><span class="w ai">AI</span><span class="note"><b>AI</b> /eɪ.aɪ/ n.<br>매일 쓰는 서비스 안에서<br>조용히 일하는 기술.</span></span>
+  </h1>
+  <div class="sub">
+    <p><b>일상 속에서 쓰이는 AI를 만듭니다.</b><br>
+       AI 모델을 서비스에 연결하고, 실제 환경에서 검증하는 일을 합니다.</p>
+    <span class="label">Scroll ↓</span>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>MODERA 분석 시간</span><span class="m">11s → 7s</span><i>✦</i>
+    <span>SIA 로컬 명령 처리</span><span class="m">19% → 89%</span><i>✦</i>
+    <span>Dver·Dva 불만 판정 정밀도</span><span class="m">96%</span><i>✦</i>
+    <span>IT-doc 진료과 적중률</span><span class="m">51.5% → 83%</span><i>✦</i>
+    <span>자율주행 레이싱 대회</span><span class="m">1 / 278</span><i>✦</i>
+    <span>MODERA 분석 시간</span><span class="m">11s → 7s</span><i>✦</i>
+    <span>SIA 로컬 명령 처리</span><span class="m">19% → 89%</span><i>✦</i>
+    <span>Dver·Dva 불만 판정 정밀도</span><span class="m">96%</span><i>✦</i>
+    <span>IT-doc 진료과 적중률</span><span class="m">51.5% → 83%</span><i>✦</i>
+    <span>자율주행 레이싱 대회</span><span class="m">1 / 278</span><i>✦</i>
+  </div>
+</div>
+
+<main>
+<!-- STATEMENT -->
+<section class="statement">
+  <div class="meta-row"><span class="label">(About)</span><span class="label" id="tok"></span></div>
+  <p id="stmt">평가 데이터로 <em>측정</em>하고,<br>로그를 <em>근거</em>로 고칩니다.</p>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="work">
+  <div class="sec-top"><h2>Selected<br><span class="it accent">work</span></h2><span class="label">(05) · 2026</span></div>
+  <ol class="index">
+    <li class="head" aria-hidden="true"><span class="label">No.</span><span class="label">Project</span><span class="label">Role</span><span class="label">Note</span><span class="label">Year</span></li>
+    <li><a href="#p-modera" data-img="img/modera.webp" data-target><span class="label">01</span><b>MODERA</b><span class="label">AI</span><span class="label">우수상 (1위)</span><span class="label">2026</span></a></li>
+    <li><a href="#p-sia" data-img="img/sia.webp" data-target><span class="label">02</span><b>SIA</b><span class="label">AI 총괄</span><span class="label">최종 발표</span><span class="label">2026</span></a></li>
+    <li><a href="#p-dva" data-img="img/dva.webp" data-target><span class="label">03</span><b>DVER·DVA</b><span class="label">FE 리드 · 배포</span><span class="label">기업연계</span><span class="label">2026</span></a></li>
+    <li><a href="#p-more" data-img="img/itdoc.webp" data-target><span class="label">04</span><b>IT-DOC</b><span class="label">추천 엔진 · BE · FE</span><span class="label">2인</span><span class="label">2026</span></a></li>
+    <li><a href="#p-more" data-target><span class="label">05</span><b>RACING</b><span class="label">팀장 · 주행 알고리즘</span><span class="label">전국 우승</span><span class="label">2026</span></a></li>
+  </ol>
+
+  <!-- MODERA -->
+  <article class="proj" id="p-modera">
+    <div class="idx"><b>01</b></div>
+    <div>
+      <p class="scene">스크린샷 분류 · 자연어 검색</p>
+      <h3>Modera</h3>
+      <div class="meta">
+        <span class="label award">★ 팀 프로젝트 우수상 (1위)</span><span class="label">공통 프로젝트</span><span class="label">2026.07–08</span><span class="label">Android · 6인</span>
+      </div>
+      <div class="body">
+        <a class="shot" href="https://github.com/42JH/MODERA" target="_blank" rel="noopener" data-target>
+          <img src="img/modera.webp" alt="MODERA 앱 화면" loading="lazy" width="1400" height="788">
+          <span class="tagl label">Screenshot manager</span>
+        </a>
+        <div class="what">
+          <p class="role">AI 담당 (2인 중 1명)</p>
+          <p>스크린샷을 올리면 제목, 요약, 태그, 카테고리를 자동으로 붙이고, 기억나는 문장으로 다시 찾을 수 있는 안드로이드 앱입니다.</p>
+          <div class="nums">
+            <div class="num"><div class="v"><span class="from">11s</span><span class="ar">→</span><span data-count="7" data-from="11" data-suffix="s">7s</span></div><div class="k">스크린샷 분석 시간</div></div>
+            <div class="num"><div class="v"><span data-count="-35" data-suffix="%">−35%</span></div><div class="k">LLM 호출 비용</div></div>
+            <div class="num"><div class="v"><span data-count="92.3" data-dec="1" data-suffix="%">92.3%</span></div><div class="k">카테고리 분류 정확도</div></div>
+            <div class="num"><div class="v"><span class="from">7</span><span class="ar">→</span><span data-count="1" data-from="7" data-suffix="건">1건</span></div><div class="k">검색 결과 중 엉뚱한 결과</div></div>
+          </div>
+          <div class="links"><a class="pill" href="https://github.com/42JH/MODERA" target="_blank" rel="noopener" data-target>GitHub ↗</a></div>
+        </div>
+        <details class="case">
+          <summary data-target><span class="label">Case file</span><span class="plus">+</span></summary>
+          <div class="case-grid">
+            <div><span class="label">Problem</span><p>스크린샷 한 장을 분석하는 데 11초가 걸렸습니다.</p></div>
+            <div><span class="label">Measure</span><p>단계별 소요 시간을 기록해 보니 Gemini를 세 번 나눠 호출하고 있었습니다.</p></div>
+            <div><span class="label">Fix</span><p>구조화 출력으로 호출을 한 번으로 합쳤습니다. 검색은 BM25와 bge-m3 벡터 검색을 RRF로 결합했습니다.</p></div>
+            <div><span class="label">Result</span><p>분석 시간 11초에서 7초, 비용 35% 감소. 분류 정확도 92.3%, 관련 없는 검색 결과 7건에서 1건.</p></div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </article>
+
+  <!-- SIA -->
+  <article class="proj" id="p-sia">
+    <div class="idx"><b>02</b></div>
+    <div>
+      <p class="scene">시선 · 음성 기반 데스크톱 비서</p>
+      <h3>SIA</h3>
+      <div class="meta">
+        <span class="label award">AI 총괄 · 최종 발표</span><span class="label">특화 프로젝트</span><span class="label">2026.08–09</span><span class="label">Windows · 6인</span>
+      </div>
+      <div class="body">
+        <a class="shot" href="https://github.com/42JH/SIA/blob/main/assets/demo.mp4" target="_blank" rel="noopener" data-target>
+          <img src="img/sia.webp" alt="SIA 표지" loading="lazy" width="1400" height="788">
+          <span class="tagl label">Desktop assistant</span>
+        </a>
+        <div class="what">
+          <p class="role">AI 총괄</p>
+          <p>말하는 순간의 시선, 화면, 음성을 함께 보고 “이거 저장해줘” 같은 명령을 실행하는 Windows 비서입니다.</p>
+          <div class="nums">
+            <div class="num"><div class="v"><span class="from">19%</span><span class="ar">→</span><span data-count="89" data-from="19" data-suffix="%">89%</span></div><div class="k">PC 안에서 바로 처리되는 음성 명령</div></div>
+            <div class="num"><div class="v"><span data-count="0.15" data-dec="2" data-suffix="s">0.15s</span></div><div class="k">고정 명령 응답 시간</div></div>
+            <div class="num"><div class="v"><span class="from">228</span><span class="ar">→</span><span data-count="156" data-from="228" data-suffix="px">156px</span></div><div class="k">웹캠 시선 추정 오차</div></div>
+            <div class="num"><div class="v"><span data-count="31" data-suffix="개">31개</span></div><div class="k">LLM이 호출하는 실행 도구</div></div>
+          </div>
+          <div class="links">
+            <a class="pill hot" href="https://github.com/42JH/SIA/blob/main/assets/demo.mp4" target="_blank" rel="noopener" data-target>▶ 시연 영상</a>
+            <a class="pill" href="https://github.com/42JH/SIA" target="_blank" rel="noopener" data-target>GitHub ↗</a>
+          </div>
+        </div>
+        <details class="case">
+          <summary data-target><span class="label">Case file</span><span class="plus">+</span></summary>
+          <div class="case-grid">
+            <div><span class="label">Problem</span><p>“계산기 열어줘” 같은 간단한 명령에 6~15초가 걸렸습니다.</p></div>
+            <div><span class="label">Measure</span><p>발화 로그를 확인해 보니 음성 인식이 GPU가 아닌 CPU에서 돌고 있었고, 간단한 명령까지 LLM으로 넘어가고 있었습니다.</p></div>
+            <div><span class="label">Fix</span><p>GPU 추론을 복구하고, 고정 명령은 faster-whisper와 명령 사전으로 로컬에서 처리했습니다. 화면을 봐야 하는 명령만 LLM으로 보냈습니다.</p></div>
+            <div><span class="label">Result</span><p>로컬 처리 비율 19%에서 89%, 응답 0.15초. 시선 추정 오차는 228px에서 156px로 줄였습니다.</p></div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </article>
+
+  <!-- DVA -->
+  <article class="proj" id="p-dva">
+    <div class="idx"><b>03</b></div>
+    <div>
+      <p class="scene">전화 접수 AI 상담원 · 관리자 웹</p>
+      <h3>Dver·Dva</h3>
+      <div class="meta">
+        <span class="label award">기업연계</span><span class="label">프론트엔드 리드 · 배포</span><span class="label">2026.10–11</span><span class="label">Web · 6인</span>
+      </div>
+      <div class="body">
+        <a class="shot" href="https://github.com/42JH/DVA/blob/main/assets/dva-intro.mp4" target="_blank" rel="noopener" data-target>
+          <img src="img/dva.webp" alt="Dver·Dva 표지" style="object-position:left center" loading="lazy" width="1280" height="564">
+          <span class="tagl label">▶ Intro 0:54</span>
+        </a>
+        <div class="what">
+          <p class="role">프론트엔드 리드 · UI 디자인 · 배포</p>
+          <p>고객이 전화로 배송 정보를 말하면 AI 상담원이 주소와 물품을 확인해 접수합니다. 운영자는 관리자 웹에서 통화와 주문 내역을 확인합니다.</p>
+          <div class="nums">
+            <div class="num"><div class="v"><span data-count="96" data-suffix="%">96%</span></div><div class="k">통화 후 고객 불만 자동 판정 정밀도</div></div>
+            <div class="num"><div class="v"><span data-count="10" data-suffix="건">10건</span></div><div class="k">가상 고객 음성 시나리오 자동 시험</div></div>
+          </div>
+          <div class="links">
+            <a class="pill hot" href="https://github.com/42JH/DVA/blob/main/assets/dva-intro.mp4" target="_blank" rel="noopener" data-target>▶ 소개 영상</a>
+            <a class="pill" href="https://github.com/42JH/DVA" target="_blank" rel="noopener" data-target>GitHub ↗</a>
+          </div>
+        </div>
+        <details class="case">
+          <summary data-target><span class="label">Case file</span><span class="plus">+</span></summary>
+          <div class="case-grid">
+            <div><span class="label">Problem</span><p>프롬프트를 바꿨을 때 통화 품질이 어떻게 달라지는지, 어떤 통화에 불만이 있었는지 바로 알기 어려웠습니다.</p></div>
+            <div><span class="label">Measure</span><p>반영 전에 돌려 볼 시험과, 통화 후 자동으로 판정할 기준을 정했습니다.</p></div>
+            <div><span class="label">Fix</span><p>가상 고객과 통화하는 시나리오 10개 자동 시험, 통화 기록을 LLM으로 읽어 불만과 응대 오류 5유형을 판정하는 기능을 만들었습니다.</p></div>
+            <div><span class="label">Result</span><p>불만으로 판정한 통화 중 96%가 실제 불만이었습니다.</p></div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </article>
+
+  <div class="minis" id="p-more">
+    <div class="mini">
+      <div class="big"><span data-count="1">1</span><small> / 278팀</small></div>
+      <h4>자율주행 레이싱 대회 전국 우승 <span class="accent">★</span></h4>
+      <p>AirSim 자율주행 알고리즘 대회. 3인 팀 팀장으로 속도 계획, 장애물 회피, 사고 복구를 맡았습니다. 2026.05–07</p>
+    </div>
+    <div class="mini">
+      <div class="big"><span data-count="83" data-from="51.5" data-suffix="%">83%</span></div>
+      <h4>IT-doc 병원 추천 웹</h4>
+      <p>증상 문장으로 진료과를 추천합니다. 키워드 사전으로 판단이 어려운 경우만 LLM으로 보내 1~3순위 적중률을 51.5%에서 약 83%로 올렸습니다. 2026.06 · 2인</p>
+      <div class="links"><a class="pill" href="https://github.com/42JH/IT-doc" target="_blank" rel="noopener" data-target>GitHub ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <span class="label">(Approach)</span>
+  <h2>How I <span class="it accent">work</span></h2>
+  <div class="cols">
+    <div class="col">
+      <div class="n">01</div>
+      <h3>측정 환경 검증</h3>
+      <p>캐시가 남은 브라우저로 Lighthouse를 측정해 모든 화면이 100점으로 나왔습니다. 캐시를 비우고 다시 측정하니 85~98점이었습니다. 이후로는 측정 조건을 먼저 확인합니다.</p>
+    </div>
+    <div class="col">
+      <div class="n">02</div>
+      <h3>비교 측정 후 결정</h3>
+      <p>글꼴 파일을 직접 제공하는 방식으로 첫 화면 표시는 빨라졌지만, 같은 조건으로 비교하니 LCP가 2.6배 느려져 적용하지 않았습니다.</p>
+    </div>
+    <div class="col">
+      <div class="n">03</div>
+      <h3>리팩터링 전 동작 기록</h3>
+      <p>378줄짜리 훅을 분리하기 전에 화면 동작과 API 요청을 54단계로 기록했습니다. 분리 후 같은 기록을 비교해 동작이 바뀌지 않은 것을 확인했습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="tl" id="timeline">
+  <div class="sec-top" style="border-top:0"><h2>Time<span class="it accent">line</span></h2><span class="label">2024 — 2026</span></div>
+  <ol>
+    <li data-target><span class="label">2026.10 – 11</span><b>Dver·Dva</b><span>기업연계 · 프론트엔드 리드</span></li>
+    <li data-target><span class="label">2026.08 – 09</span><b>SIA</b><span>특화 · AI 총괄 · 최종 발표</span></li>
+    <li data-target><span class="label">2026.07 – 08</span><b>MODERA</b><span class="badge">공통 · 우수상 ★</span></li>
+    <li data-target><span class="label">2026.06</span><b>교육과정 성적우수상</b><span>1학기 종합성적 2등</span></li>
+    <li data-target><span class="label">2026.05 – 07</span><b>자율주행 레이싱 대회</b><span class="badge">278팀 중 전국 우승 ★</span></li>
+    <li data-target><span class="label">2024.06 – 2025.12</span><b>42경산</b><span>Common Core · C 시스템 프로그래밍</span></li>
+  </ol>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="sec-top" style="border-top:0"><h2>Tool<span class="it accent">kit</span></h2><span class="label">Spec sheet</span></div>
+  <dl class="spec">
+    <dt class="label">AI · LLM</dt>
+    <dd><em>Gemini · OpenAI API</em><i>/</i>멀티모달 판단<i>/</i>Tool calling · MCP<i>/</i><em>하이브리드 검색</em> BM25 + bge-m3 RRF</dd>
+    <dt class="label">Speech · Vision</dt>
+    <dd>faster-whisper<i>/</i>MediaPipe<i>/</i>ETH-XGaze ResNet-18<i>/</i>PyTorch<i>/</i>Ridge · 교차검증</dd>
+    <dt class="label">Build</dt>
+    <dd><em>Python · FastAPI</em><i>/</i>TypeScript · React<i>/</i>C<i>/</i>PostgreSQL · pgvector<i>/</i>OpenSearch<i>/</i>SQLite</dd>
+    <dt class="label">Ship</dt>
+    <dd>Docker<i>/</i>Jenkins<i>/</i>Nginx<i>/</i>AWS<i>/</i>Git · GitLab · Jira<i>/</i>Figma</dd>
+    <dt class="label">AI workflow</dt>
+    <dd><em>Claude Code · Codex</em><i>/</i>Orca 멀티 에이전트 — 지시 · 작업 · 검수 · 보고 분리</dd>
+  </dl>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <span class="label">(Contact)</span>
+  <p class="closing">개발의 가장 매력적인 부분은 누군가의 불편을 실제로 쓰이는 서비스로 바꿀 수 있는 가장 직접적인 방법이라는 점입니다. 제가 가장 좋아하는 일은 <em>AI 기술을 사람들의 일상 속으로 옮기는 것</em>입니다.</p>
+  <a class="big" href="mailto:h202407@gmail.com" data-target>To be<br><span class="it accent">continued.</span></a>
+  <a class="mail" href="mailto:h202407@gmail.com" data-target>h202407@gmail.com</a>
+  <div class="links">
+    <a class="pill" href="https://github.com/42JH" target="_blank" rel="noopener" data-target>GitHub ↗</a>
+    <a class="pill" href="https://solved.ac/wogns5358" target="_blank" rel="noopener" data-target>solved.ac ↗</a>
+    <a class="pill hot" href="Portfolio_LeeJaehoon.pdf" download data-target>Portfolio PDF ↓</a>
+  </div>
+  <div class="foot"><span class="label">© 2026 Lee Jaehoon</span><span class="label">Everyday AI</span></div>
+</section>
+</main>
+
+<div class="gaze" aria-hidden="true"><div class="ring"></div><div class="read mono">x 0 · y 0</div></div>
+<div class="dot" aria-hidden="true"></div>
+<div class="preview" aria-hidden="true"><img alt=""></div>
+<div class="pager" aria-hidden="true"><span class="label" style="color:#fff" id="pg-n">01 / 03</span><span class="bars"><i class="on"></i><i></i><i></i></span><span class="label" style="color:#fff" id="pg-t">MODERA</span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer: fine)').matches;
+  const hasGsap = !!window.gsap;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* KST clock */
+  const t = $('#hud-time');
+  const tick = () => t.textContent = 'KST ' + new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Seoul' });
+  tick(); setInterval(tick, 1000);
+
+  /* pointer state shared by canvas + cursor */
+  const m = { x: innerWidth * .62, y: innerHeight * .4, gx: innerWidth * .62, gy: innerHeight * .4, active: false };
+  addEventListener('pointermove', e => { m.x = e.clientX; m.y = e.clientY; m.active = true; }, { passive: true });
+
+  /* ---------- gaze cursor: lags behind the pointer like a webcam gaze estimate ---------- */
+  const gz = $('.gaze'), dot = $('.dot'), read = $('.gaze .read'), hudxy = $('#hud-xy');
+  let target = null;
+  if (fine && !reduce) {
+    document.body.classList.add('has-gaze');
+    addEventListener('pointermove', () => { gz.classList.add('on'); dot.classList.add('on'); }, { once: true });
+    document.addEventListener('pointerover', e => { target = e.target.closest('[data-target]'); gz.classList.toggle('target', !!target); });
+  }
+  function loopCursor() {
+    m.gx += (m.x - m.gx) * .12; m.gy += (m.y - m.gy) * .12;
+    const err = Math.hypot(m.x - m.gx, m.y - m.gy);
+    if (fine && !reduce) {
+      gz.style.transform = `translate(${m.gx}px,${m.gy}px)`;
+      dot.style.transform = `translate(${m.x}px,${m.y}px)`;
+      read.textContent = target ? '이거?  ↵ 실행' : `x ${m.gx|0} · y ${m.gy|0} · err ${err|0}px`;
+    }
+    hudxy.textContent = `x ${String(m.gx|0).padStart(4,'0')} · y ${String(m.gy|0).padStart(4,'0')}`;
+    requestAnimationFrame(loopCursor);
+  }
+  requestAnimationFrame(loopCursor);
+
+  /* ---------- hero field: a dot grid that bends toward where you look ---------- */
+  const cv = $('#field'), cx = cv.getContext('2d');
+  let W, H, dpr, pts = [], heroVisible = true;
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const s = W < 600 ? 22 : 30; pts = [];
+    for (let y = s; y < H; y += s) for (let x = s / 2; x < W; x += s) pts.push(x, y);
+  }
+  resize(); addEventListener('resize', resize);
+  new IntersectionObserver(([e]) => heroVisible = e.isIntersecting).observe(cv);
+  let tt = 0;
+  function draw() {
+    if (heroVisible) {
+      tt += .008;
+      cx.clearRect(0, 0, W, H);
+      const r = cv.getBoundingClientRect();
+      const gx = m.active ? m.gx - r.left : W * .62 + Math.cos(tt) * W * .18;
+      const gy = m.active ? m.gy - r.top : H * .38 + Math.sin(tt * 1.3) * H * .14;
+      const R = 156;                      // SIA's measured gaze error, in px
+      for (let i = 0; i < pts.length; i += 2) {
+        const x = pts[i], y = pts[i + 1], dx = gx - x, dy = gy - y, d = Math.hypot(dx, dy);
+        const f = Math.max(0, 1 - d / (R * 2.2));
+        const px = x + dx * f * .28, py = y + dy * f * .28;
+        cx.fillStyle = f > .55 ? `rgba(255,90,31,${.4 + f * .6})` : `rgba(239,237,230,${.1 + f * .45})`;
+        const s = 1 + f * 1.8; cx.fillRect(px - s / 2, py - s / 2, s, s);
+      }
+      cx.strokeStyle = 'rgba(255,90,31,.55)'; cx.setLineDash([3, 5]);
+      cx.beginPath(); cx.arc(gx, gy, R, 0, Math.PI * 2); cx.stroke(); cx.setLineDash([]);
+      cx.font = '10px "JetBrains Mono", monospace'; cx.fillStyle = 'rgba(255,90,31,.9)';
+      cx.fillText('GAZE REGION · r=156px', gx + R * .72, gy - R * .72);
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  draw();
+
+  /* ---------- counters ---------- */
+  function fmt(el, v) {
+    const dec = +(el.dataset.dec || 0), suf = el.dataset.suffix || '';
+    const s = Math.abs(v).toFixed(dec);
+    el.textContent = (v < 0 ? '−' : '') + s + suf;
+  }
+
+  /* index hover preview (desktop) */
+  const pv = $('.preview'), pvi = $('.preview img'); let pvx = 0, pvy = 0;
+  if (fine) {
+    $$('.index a[data-img]').forEach(a => {
+      a.addEventListener('pointerenter', () => { pvi.src = a.dataset.img; pv.classList.add('on'); });
+      a.addEventListener('pointerleave', () => pv.classList.remove('on'));
+    });
+    (function follow() { pvx += (m.x - pvx) * .15; pvy += (m.y - pvy) * .15;
+      pv.style.left = pvx + 'px'; pv.style.top = pvy + 'px'; requestAnimationFrame(follow); })();
+  }
+
+  if (!hasGsap || reduce) return;   // content is fully readable without the motion layer
+  document.documentElement.classList.add('js');
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* smooth scroll */
+  if (window.Lenis) {
+    const lenis = new Lenis({ lerp: .1 });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
+    $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(a.getAttribute('href'), { offset: 0 }); }));
+  }
+
+  /* loader: 9-point calibration */
+  const L = document.createElement('div');
+  L.className = 'loader';
+  L.innerHTML = '<div class="grid9">' + '<i class="p"></i>'.repeat(9) + '</div><div class="cap"><span class="label">Calibrating gaze</span><span class="label" id="lp">0 / 9</span></div>';
+  document.body.appendChild(L);
+  const ps = $$('.p', L), lp = $('#lp', L), order = [4,0,2,8,6,1,5,7,3];
+  const tl = gsap.timeline();
+  order.forEach((n, i) => tl.call(() => { ps[n].classList.add('hit'); lp.textContent = `${i + 1} / 9`; }, null, i * .085));
+  tl.to(L, { clipPath: 'inset(0 0 100% 0)', duration: .8, ease: 'expo.inOut' }, '+=.15')
+    .call(() => L.remove());
+
+  /* hero title: split chars */
+  $$('.hero h1 .w').forEach(w => {
+    w.innerHTML = [...w.textContent].map(c => `<span class="ch">${c}</span>`).join('');
+  });
+  tl.from('.hero h1 .ch', { yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: .035 }, '-=.45')
+    .from('.hero .sub > *, .hud > div', { y: 16, opacity: 0, duration: .8, ease: 'power3.out', stagger: .06 }, '-=.8');
+
+  /* hero parallax out */
+  const heroST = () => ({ trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true });
+  gsap.to('.hero h1', { yPercent: -18, ease: 'none', scrollTrigger: heroST() });
+  gsap.to('.hero h1 .ln:first-child .w', { xPercent: -12, ease: 'none', scrollTrigger: heroST() });
+  gsap.to('.hero h1 .ln2', { xPercent: 10, ease: 'none', scrollTrigger: heroST() });
+
+  /* page tone shifts to paper while the approach section is on screen */
+  ScrollTrigger.create({ trigger: '.how', start: 'top 55%', end: 'bottom 45%',
+    onToggle: s => document.documentElement.classList.toggle('lightmode', s.isActive) });
+
+  /* magnetic buttons */
+  if (fine) $$('.pill, .nav .pdf').forEach(b => {
+    const qx = gsap.quickTo(b, 'x', { duration: .5, ease: 'power3' }), qy = gsap.quickTo(b, 'y', { duration: .5, ease: 'power3' });
+    b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect();
+      qx((e.clientX - r.left - r.width / 2) * .35); qy((e.clientY - r.top - r.height / 2) * .35); });
+    b.addEventListener('pointerleave', () => { qx(0); qy(0); });
+  });
+
+  /* images lean with scroll speed */
+  const skewTargets = $$('.shot img'), skewSet = skewTargets.map(el => gsap.quickTo(el, 'skewY', { duration: .6, ease: 'power3' }));
+  ScrollTrigger.create({ onUpdate: s => { const v = gsap.utils.clamp(-6, 6, s.getVelocity() / -300); skewSet.forEach(f => f(v)); } });
+
+  /* project pager */
+  const pg = $('.pager'), pgn = $('#pg-n'), pgt = $('#pg-t'), bars = $$('.pager .bars i'), names = ['MODERA', 'SIA', 'DVER·DVA'];
+  ScrollTrigger.create({ trigger: '#p-modera', start: 'top 60%', endTrigger: '#p-dva', end: 'bottom 40%', onToggle: s => pg.classList.toggle('on', s.isActive) });
+  $$('.proj').forEach((p, i) => ScrollTrigger.create({ trigger: p, start: 'top 50%', end: 'bottom 50%', onToggle: s => {
+    if (!s.isActive) return; pgn.textContent = `0${i + 1} / 03`; pgt.textContent = names[i]; bars.forEach((b, j) => b.classList.toggle('on', j === i)); } }));
+
+  /* index rows slide in */
+  gsap.from('.index li', { yPercent: 60, opacity: 0, duration: 1, ease: 'expo.out', stagger: .07, scrollTrigger: { trigger: '.index', start: 'top 80%' } });
+
+  /* statement: word-by-word light-up */
+  const st = $('#stmt');
+  const wrap = n => n.nodeName === 'BR' ? '<br>' : n.nodeType === 3
+    ? n.textContent.split(/(\s+)/).map(s => s.trim() ? `<span class="w">${s}</span>` : s).join('')
+    : `<em>${[...n.childNodes].map(wrap).join('')}</em>`;
+  st.innerHTML = [...st.childNodes].map(wrap).join('');
+  /* the about line streams in token by token, like an LLM response */
+  const words = $$('#stmt .w'), tok = $('#tok'); let shown = -1;
+  gsap.set(words, { opacity: 0 });
+  const stream = { i: 0 };
+  ScrollTrigger.create({ trigger: st, start: 'top 70%', once: true, onEnter: () =>
+    gsap.to(stream, { i: words.length - 1, duration: words.length * .07, ease: 'none', onUpdate: () => {
+      const n = Math.round(stream.i);
+      while (shown < n) { shown++; words[shown].style.opacity = 1; }
+      words.forEach(w => w.classList.remove('cur')); words[n].classList.add('cur');
+      tok.textContent = (n + 1) + ' tokens · streaming';
+    }, onComplete: () => { tok.textContent = words.length + ' tokens · done'; } }) });
+
+  /* projects */
+  $$('.proj').forEach(p => {
+    gsap.from(p.querySelector('h3'), { yPercent: 40, opacity: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: p, start: 'top 78%' } });
+    const shot = p.querySelector('.shot');
+    const sl = document.createElement('span'); sl.className = 'slices'; sl.innerHTML = '<i></i>'.repeat(8); shot.appendChild(sl);
+    gsap.to(sl.children, { scaleY: 0, duration: 1.1, ease: 'expo.inOut', stagger: { each: .06, from: 'start' },
+      scrollTrigger: { trigger: shot, start: 'top 82%', onEnter: () => p.classList.add('seen') } });
+    gsap.to(shot.querySelector('img'), { yPercent: -6, ease: 'none', scrollTrigger: { trigger: shot, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+
+  /* counters: measured values tick into place */
+  $$('[data-count]').forEach(el => {
+    const to = +el.dataset.count, from = el.dataset.from !== undefined ? +el.dataset.from : 0, o = { v: from };
+    fmt(el, from);
+    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true,
+      onEnter: () => gsap.to(o, { v: to, duration: 1.6, ease: 'power3.out', onUpdate: () => fmt(el, o.v) }) });
+  });
+
+  /* generic reveals */
+  $$('.how .col, .tl li, .spec dd, .mini').forEach(el =>
+    gsap.from(el, { y: 30, opacity: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } }));
+  gsap.from('.contact .closing, .contact .big', { yPercent: 30, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.contact', start: 'top 70%' } });
+})();
+</script>
+</body>
+</html>
