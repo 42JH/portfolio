@@ -129,8 +129,8 @@ img{display:block;max-width:100%}
 .proj .meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin:22px 0 36px}
 .proj .meta .award{color:var(--accent)}
 .proj .body{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,64px);align-items:start}
-.shot{position:relative;overflow:hidden;border-radius:6px;background:var(--bg2);aspect-ratio:16/10}
-.shot img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);filter:grayscale(1) contrast(1.05);transition:filter .8s}
+.shot{position:relative;overflow:hidden;border-radius:6px;background:var(--bg2);display:block}
+.shot img{width:100%;height:auto;filter:grayscale(1) contrast(1.05);transition:filter .8s}
 .shot:hover img,.proj.seen .shot img{filter:none}
 .slices{position:absolute;inset:0;display:flex;pointer-events:none;z-index:2}
 .slices i{flex:1;background:var(--bg);transform-origin:50% 0}
@@ -416,7 +416,7 @@ details.case[open] summary .plus{transform:rotate(45deg)}
       </div>
       <div class="body">
         <a class="shot" href="https://github.com/42JH/DVA#readme" target="_blank" rel="noopener" data-target>
-          <img src="img/dva.webp" alt="Dver·Dva 표지" style="object-position:left center" loading="lazy" width="1280" height="564">
+          <img src="img/dva.webp" alt="Dver·Dva 표지" loading="lazy" width="1280" height="564">
           <span class="tagl label">Phone AI agent</span>
         </a>
         <div class="what">
@@ -673,7 +673,7 @@ details.case[open] summary .plus{transform:rotate(45deg)}
   });
 
   /* images lean with scroll speed */
-  const skewTargets = $$('.shot img'), skewSet = skewTargets.map(el => gsap.quickTo(el, 'skewY', { duration: .6, ease: 'power3' }));
+  const skewTargets = $$('.shot'), skewSet = skewTargets.map(el => gsap.quickTo(el, 'skewY', { duration: .6, ease: 'power3' }));
   ScrollTrigger.create({ onUpdate: s => { const v = gsap.utils.clamp(-6, 6, s.getVelocity() / -300); skewSet.forEach(f => f(v)); } });
 
   /* project pager */
@@ -710,7 +710,6 @@ details.case[open] summary .plus{transform:rotate(45deg)}
     const sl = document.createElement('span'); sl.className = 'slices'; sl.innerHTML = '<i></i>'.repeat(8); shot.appendChild(sl);
     gsap.to(sl.children, { scaleY: 0, duration: 1.1, ease: 'expo.inOut', stagger: { each: .06, from: 'start' },
       scrollTrigger: { trigger: shot, start: 'top 82%', onEnter: () => p.classList.add('seen') } });
-    gsap.to(shot.querySelector('img'), { yPercent: -6, ease: 'none', scrollTrigger: { trigger: shot, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 
   /* counters: measured values tick into place */
