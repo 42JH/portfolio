@@ -277,10 +277,7 @@ details.case[open] summary .plus{transform:rotate(45deg)}
 <header class="hero" id="top">
   <canvas id="field" aria-hidden="true"></canvas>
   <div class="hud">
-    <div><span class="label">AI Engineer</span><b>SSAFY 15th · Gumi</b></div>
     <div class="hide-m"><span class="label">Gaze</span><b id="hud-xy">x 0000 · y 0000</b></div>
-    <div class="hide-m"><span class="label">Local time</span><b id="hud-time">KST --:--:--</b></div>
-    <div style="text-align:right"><span class="label">Status</span><b><span class="accent">●</span> Open to work</b></div>
   </div>
 
   <h1 aria-label="Everyday AI">
@@ -546,10 +543,6 @@ details.case[open] summary .plus{transform:rotate(45deg)}
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  /* KST clock */
-  const t = $('#hud-time');
-  const tick = () => t.textContent = 'KST ' + new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Seoul' });
-  tick(); setInterval(tick, 1000);
 
   /* pointer state shared by canvas + cursor */
   const m = { x: innerWidth * .62, y: innerHeight * .4, gx: innerWidth * .62, gy: innerHeight * .4, active: false };
