@@ -76,7 +76,7 @@ document.getElementById('app').innerHTML = `
   ${p.cases.map((c, k) => `
   <article class="case rv">
     <h3><span class="label">0${k + 1}</span>${esc(c.title)}</h3>
-    <div class="case-grid">
+    <div class="case-grid${c.evidence || c.log || c.why ? '' : ' solo'}">
       <div>
         <div class="steps">
           <div><span class="label">Problem</span><p>${esc(c.problem)}</p></div>
@@ -95,13 +95,13 @@ document.getElementById('app').innerHTML = `
       <div class="ev demo-note"><span class="label">Why</span><p>${esc(c.demo.note)}</p></div>` : ''}
     ${c.shots ? `<div class="cshots">${c.shots.map(s => `<figure><img src="${s[0]}" alt="${esc(s[1])}" loading="lazy"><figcaption>${esc(s[1])}</figcaption></figure>`).join('')}</div>` : ''}
   </article>`).join('')}
+  ${p.perf ? `<div class="box rv" style="margin-top:24px"><span class="label">${esc(p.perf.title)}</span><div class="perf">${p.perf.rows.map(r => `<div><b>${esc(r[0])}</b><span style="color:var(--muted);font-size:14px">${esc(r[1])}</span></div>`).join('')}</div></div>` : ''}
 </div></section>
 
 <section id="retro"><div class="wrap">
   <div class="sec-head"><h2>회고</h2></div>
   <div class="cols3 retro">${p.retro.map((r, k) => `<div class="box rv"><span class="n">0${k + 1}</span><h4 style="margin-top:10px">${esc(r[0])}</h4><p>${esc(r[1])}</p></div>`).join('')}</div>
   ${p.next ? `<div class="box rv" style="margin-top:20px"><span class="label">Next</span><p>${esc(p.next)}</p></div>` : ''}
-  ${p.perf ? `<div class="box rv" style="margin-top:20px"><span class="label">${esc(p.perf.title)}</span><div class="perf">${p.perf.rows.map(r => `<div><b>${esc(r[0])}</b><span style="color:var(--muted);font-size:14px">${esc(r[1])}</span></div>`).join('')}</div></div>` : ''}
   ${p.links.length ? `<div class="links" style="margin-top:36px">${p.links.map(l => `<a class="btn${l[0] === 'GitHub' ? '' : ' solid'}" href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])} ↗</a>`).join('')}</div>` : ''}
 </div></section>
 
