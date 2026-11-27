@@ -91,10 +91,15 @@
   const num = /^([−-]?)(\d+(?:\.\d+)?)(%|ms|px|개|건|초)?$/;
   $$('.stats b, .pcard .nums b, .result b, .perf b').forEach(el => {
     const m = el.textContent.trim().match(num); if (!m) return;
-    const to = +m[2], dec = (m[2].split('.')[1] || '').length, o = { v: 0 };
-    el.textContent = m[1] + (0).toFixed(dec) + (m[3] || '');
-    ScrollTrigger.create({ trigger: el, start: 'top 92%', once: true, onEnter: () =>
-      gsap.to(o, { v: to, duration: 1.6, ease: 'power3.out', onUpdate: () => el.textContent = m[1] + o.v.toFixed(dec) + (m[3] || '') }) });
+    const to = +m[2], dec = (m[2].split('.')[1] || '').length, o = { v: 0 }, fin = el.textContent;
+    const show = v => el.textContent = m[1] + v.toFixed(dec) + (m[3] || '');
+    el.style.fontVariantNumeric = 'tabular-nums';
+    show(0);
+    ScrollTrigger.create({ trigger: el, start: 'top 92%', once: true, onEnter: () => {
+      // lock the box to the final number's width (measured now, after web fonts) so in-between values don't shift the neighbours
+      el.textContent = fin; el.style.minWidth = el.getBoundingClientRect().width + 'px'; show(0);
+      gsap.to(o, { v: to, duration: 1.6, ease: 'power3.out', onUpdate: () => show(o.v) });
+    } });
   });
 
   /* images: wipe in from below, then drift slightly */

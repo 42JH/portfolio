@@ -18,7 +18,7 @@
 
 <nav class="nav"><div class="wrap">
   <a class="brand" href="#top">이재훈</a>
-  <ul><li><a href="#projects">Projects</a></li><li><a href="#how">How I work</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul>
+  <ul><li><a href="#projects">Projects</a></li><li><a href="#workflow">Workflow</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul>
   <a class="btn" href="Portfolio_LeeJaehun.pdf" download>PDF ↓</a>
 </div></nav>
 
@@ -55,39 +55,46 @@
   </a>
 </div></section>
 
-<section id="how"><div class="wrap">
-  <div class="sec-head"><h2>How I work</h2><span class="label">AI Orchestration · Orca</span></div>
+<section id="workflow"><div class="wrap">
+  <div class="sec-head"><h2>Workflow</h2><span class="label">AI Orchestration · Orca</span></div>
   <div class="flow rv">
     <div class="flow-bar"><i></i><i></i><i></i><span class="label">orca — orchestration</span></div>
-    <svg class="flow-svg" viewBox="0 0 1000 380" role="img" aria-label="작업 지시 후 Claude 세션 3개가 병렬로 구현하고, Codex가 1차 검수, Gemini가 2차 교차 검증한 뒤, 승인하면 각 세션에 수정이 자동 지시되는 흐름">
-      <path class="fe" id="fe1a" d="M160 180 C200 180,200 90,240 90"/>
-      <path class="fe" id="fe1b" d="M160 180 L240 180"/>
-      <path class="fe" id="fe1c" d="M160 180 C200 180,200 270,240 270"/>
-      <path class="fe" id="fe2a" d="M400 90 C440 90,440 180,470 180"/>
-      <path class="fe" id="fe2b" d="M400 180 L470 180"/>
-      <path class="fe" id="fe2c" d="M400 270 C440 270,440 180,470 180"/>
-      <path class="fe" id="fe3" d="M620 180 L670 180"/>
-      <path class="fe" id="fe4" d="M820 180 L860 180"/>
-      <path class="fe loop" id="fe5" d="M925 220 L925 345 Q925 355 915 355 L330 355 Q320 355 320 345 L320 295"/>
-      <text class="fl" x="620" y="372" text-anchor="middle">승인하면 지적받은 세션에 수정 자동 지시</text>
-      <g class="fn" id="fnMe" style="--c:var(--accent)"><rect x="40" y="148" width="120" height="64" rx="12"/><text class="role" x="56" y="172">지시</text><text class="nm" x="56" y="196">이재훈</text></g>
-      <g class="fn" id="fnC1" style="--c:#e8916a"><rect x="240" y="65" width="160" height="50" rx="12"/><text class="role" x="256" y="85">작업자 · 세션 1</text><text class="nm" x="256" y="105">Claude</text><rect class="pb" x="330" y="98" width="56" height="4" rx="2"/><rect class="pf" id="fp1" x="330" y="98" width="0" height="4" rx="2"/></g>
-      <g class="fn" id="fnC2" style="--c:#e8916a"><rect x="240" y="155" width="160" height="50" rx="12"/><text class="role" x="256" y="175">작업자 · 세션 2</text><text class="nm" x="256" y="195">Claude</text><rect class="pb" x="330" y="188" width="56" height="4" rx="2"/><rect class="pf" id="fp2" x="330" y="188" width="0" height="4" rx="2"/></g>
-      <g class="fn" id="fnC3" style="--c:#e8916a"><rect x="240" y="245" width="160" height="50" rx="12"/><text class="role" x="256" y="265">작업자 · 세션 3</text><text class="nm" x="256" y="285">Claude</text><rect class="pb" x="330" y="278" width="56" height="4" rx="2"/><rect class="pf" id="fp3" x="330" y="278" width="0" height="4" rx="2"/></g>
-      <g class="fn" id="fnCx" style="--c:#d6d6d0"><rect x="470" y="140" width="150" height="80" rx="12"/><text class="role" x="486" y="164">1차 검수</text><text class="nm" x="486" y="188">Codex</text><text class="st" x="486" y="208">고칠 점 정리</text></g>
-      <g class="fn" id="fnGm" style="--c:#7b8cff"><rect x="670" y="140" width="150" height="80" rx="12"/><text class="role" x="686" y="164">2차 검수</text><text class="nm" x="686" y="188">Gemini</text><text class="st" x="686" y="208">교차 검증</text></g>
-      <g class="fn" id="fnOk" style="--c:var(--accent)"><rect x="860" y="140" width="130" height="80" rx="12"/><text class="role" x="876" y="164">컨펌</text><text class="nm" x="876" y="188">이재훈</text><text class="st" x="876" y="208" id="fOkT">확인 중</text></g>
+    <svg class="flow-svg" viewBox="0 0 1000 290" role="img" aria-label="작업 흐름: 문제 정의, 해결 방식 설계, 작업 지시 → Orca 작업 분할·배분 → Claude 세션별 병렬 구현 → Codex 1차 검수 → Gemini 2차 검수 → Orca 결과 취합·보고 → 지적 사항 검토·승인 → 지적받은 부분만 재지시·재검수 → 직접 실행해 최종 검수">
+      <g class="zone"><text x="15" y="22">설계 · 최종 검수</text><line x1="15" y1="34" x2="165" y2="34"/></g>
+      <g class="zone"><text x="195" y="22">감독</text><line x1="195" y1="34" x2="375" y2="34"/></g>
+      <g class="zone"><text x="405" y="22">작업</text><line x1="405" y1="34" x2="605" y2="34"/></g>
+      <g class="zone"><text x="635" y="22">검수</text><line x1="635" y1="34" x2="985" y2="34"/></g>
+      <path class="fe" id="fe1" d="M150 135 L210 135"/>
+      <path class="fe" id="fe6" d="M210 165 L150 165"/>
+      <path class="fe" id="fe2a" d="M360 150 C390 150,390 77,420 77"/>
+      <path class="fe" id="fe2b" d="M360 150 L420 150"/>
+      <path class="fe" id="fe2c" d="M360 150 C390 150,390 223,420 223"/>
+      <path class="fe" id="fe3a" d="M590 77 C620 77,620 150,650 150"/>
+      <path class="fe" id="fe3b" d="M590 150 L650 150"/>
+      <path class="fe" id="fe3c" d="M590 223 C620 223,620 150,650 150"/>
+      <path class="fe" id="fe4" d="M790 150 L850 150"/>
+      <path class="fe loop" id="fe5" d="M910 190 L910 262 Q910 272 900 272 L295 272 Q285 272 285 262 L285 190"/>
+      <g class="fn" id="fnMe" style="--c:var(--accent)"><rect x="30" y="110" width="120" height="80" rx="12"/><text class="nm" x="46" y="146">이재훈</text><text class="st" x="46" y="170" id="fMeT">문제 정의</text></g>
+      <g class="fn" id="fnOr" style="--c:#2ec4a6"><rect x="210" y="110" width="150" height="80" rx="12"/><text class="nm" x="226" y="146">Orca</text><text class="st" x="226" y="170" id="fOrT">작업 분할 · 배분</text></g>
+      <g class="fn" id="fnC0" style="--c:#e8916a"><rect x="420" y="52" width="170" height="50" rx="10"/><text class="role" x="436" y="72">세션 1</text><text class="nm" x="436" y="90">Claude</text><rect class="pb" x="520" y="82" width="56" height="5" rx="2.5"/><rect class="pf" id="fp0" x="520" y="82" width="0" height="5" rx="2.5"/></g>
+      <g class="fn" id="fnC1" style="--c:#e8916a"><rect x="420" y="125" width="170" height="50" rx="10"/><text class="role" x="436" y="145">세션 2</text><text class="nm" x="436" y="163">Claude</text><rect class="pb" x="520" y="155" width="56" height="5" rx="2.5"/><rect class="pf" id="fp1" x="520" y="155" width="0" height="5" rx="2.5"/></g>
+      <g class="fn" id="fnC2" style="--c:#e8916a"><rect x="420" y="198" width="170" height="50" rx="10"/><text class="role" x="436" y="218">세션 3</text><text class="nm" x="436" y="236">Claude</text><rect class="pb" x="520" y="228" width="56" height="5" rx="2.5"/><rect class="pf" id="fp2" x="520" y="228" width="0" height="5" rx="2.5"/></g>
+      <g class="fn" id="fnCx" style="--c:#d6d6d0"><rect x="650" y="110" width="140" height="80" rx="12"/><text class="role" x="666" y="136">1차</text><text class="nm" x="666" y="160">Codex</text><text class="st" x="666" y="178" id="fCxT">고칠 점 정리</text></g>
+      <g class="fn" id="fnGm" style="--c:#7b8cff"><rect x="850" y="110" width="120" height="80" rx="12"/><text class="role" x="866" y="136">2차</text><text class="nm" x="866" y="160">Gemini</text><text class="st" x="866" y="178" id="fGmT">교차 검증</text></g>
       <g id="fDots"></g>
     </svg>
     <ol class="flow-list">
-      <li><b>이재훈</b>작업 지시</li>
-      <li><b>Claude × 3</b>세션별 병렬 구현</li>
+      <li><b>이재훈</b>문제 정의 → 해결 방식 설계 → 작업 지시</li>
+      <li><b>Orca</b>작업 분할 · 세션별 배분</li>
+      <li><b>Claude</b>세션별 병렬 구현</li>
       <li><b>Codex</b>1차 검수 · 고칠 점 정리</li>
       <li><b>Gemini</b>2차 검수 · 교차 검증</li>
-      <li><b>이재훈</b>검수 보고 확인 후 승인</li>
-      <li><b>Orca</b>지적받은 세션에 수정 자동 지시</li>
+      <li><b>Orca</b>검수 결과 취합 · 보고</li>
+      <li><b>이재훈</b>지적 사항 검토 · 반영할 것만 승인</li>
+      <li><b>Orca</b>지적받은 부분만 재지시 · 재검수</li>
+      <li><b>이재훈</b>최종 검수 · 직접 실행해 확인</li>
     </ol>
-    <div class="flow-st" id="fSt" aria-hidden="true">지시 → 병렬 구현 → 1차·2차 검수 → 승인 → 자동 재지시</div>
+    <div class="flow-st" id="fSt" aria-hidden="true">문제 정의 → 설계 → 지시 → 병렬 구현 → 1·2차 검수 → 검토·승인 → 재지시 → 최종 검수</div>
   </div>
 </div></section>
 
@@ -159,37 +166,56 @@ if (!calm) (async () => {
   }
 })();
 
-// how I work: the orchestration loop plays once the diagram scrolls into view, then repeats
+// workflow: the orchestration loop plays once the diagram scrolls into view, then repeats
 {
+  const READ = 1900; // every status line stays up at least this long so it can be read
+  const DOT = 1100;  // travel time of a dot along an edge
   const on = (id, v = true) => $(id).classList.toggle('on', v), done = id => $(id).classList.add('done');
-  const say = t => $('fSt').textContent = t;
+  const label = (id, t) => $(id).textContent = t;
+  let shown = 0;
+  const say = async t => { const left = shown + READ - performance.now(); if (left > 0) await wait(left); label('fSt', t); shown = performance.now(); };
   const anim = (ms, f) => new Promise(res => { const t0 = performance.now();
     const step = t => { const k = Math.min(1, (t - t0) / ms); f(k); k < 1 ? requestAnimationFrame(step) : res(); }; requestAnimationFrame(step); });
-  const fly = (ids, ms, color) => Promise.all(ids.map(id => {
-    const p = $(id), L = p.getTotalLength(), c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    c.setAttribute('r', 4.5); c.style.fill = c.style.color = color; $('fDots').appendChild(c);
-    return anim(ms, k => { const pt = p.getPointAtLength((k < .5 ? 2 * k * k : 1 - (2 - 2 * k) ** 2 / 2) * L); c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y); }).then(() => c.remove());
-  }));
-  const fill = (id, ms) => anim(ms, k => $(id).setAttribute('width', 56 * k));
-  const C = ['fnC1', 'fnC2', 'fnC3'], P = ['fp1', 'fp2', 'fp3'], N = ['fnMe', 'fnCx', 'fnGm', 'fnOk', ...C];
+  const fly = (id, color, ms = DOT) => { const p = $(id), L = p.getTotalLength(), c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('r', 5); c.style.fill = color; $('fDots').appendChild(c);
+    return anim(ms, k => { const pt = p.getPointAtLength((k < .5 ? 2 * k * k : 1 - (2 - 2 * k) ** 2 / 2) * L); c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y); }).then(() => c.remove()); };
+  const flyAll = (ids, color) => Promise.all(ids.map(id => fly(id, color)));
+  // one bar per session; they finish at different times, which is what parallel looks like
+  const bar = (i, from, to, ms) => anim(ms, k => $('fp' + i).setAttribute('width', 56 * (from + (to - from) * k)));
+  const C = ['fnC0', 'fnC1', 'fnC2'], N = ['fnMe', 'fnOr', ...C, 'fnCx', 'fnGm'];
   const run = async () => { for (;;) {
-    N.forEach(n => { on(n, false); $(n).classList.remove('done'); }); P.forEach(p => $(p).setAttribute('width', 0)); $('fOkT').textContent = '확인 중';
-    on('fnMe'); say('작업 지시'); await wait(700);
-    await fly(['fe1a', 'fe1b', 'fe1c'], 700, 'var(--accent)'); on('fnMe', false);
-    C.forEach(n => on(n)); say('Claude 세션 3개가 병렬로 구현');
-    await Promise.all([fill('fp1', 1500), fill('fp2', 2100), fill('fp3', 1200)]);
-    await fly(['fe2a', 'fe2b', 'fe2c'], 700, '#e8916a'); C.forEach(n => on(n, false));
-    on('fnCx'); say('Codex 1차 검수 · 고칠 점 정리'); await wait(1300);
-    await fly(['fe3'], 450, '#d6d6d0'); on('fnCx', false); done('fnCx');
-    on('fnGm'); say('Gemini 2차 검수 · 다른 회사 모델로 교차 검증'); await wait(1300);
-    await fly(['fe4'], 400, '#7b8cff'); on('fnGm', false); done('fnGm');
-    on('fnOk'); say('검수 보고 확인'); await wait(1500);
-    $('fOkT').textContent = '승인 ✓'; say('승인'); await wait(600);
-    // only the sessions the reviewers flagged get sent back
-    on('fe5'); say('지적받은 세션 1 · 3에만 수정 자동 지시'); ['fp1', 'fp3'].forEach(p => $(p).setAttribute('width', 0));
-    await fly(['fe5'], 1100, 'var(--accent)'); on('fnOk', false); done('fnOk'); on('fnC1'); on('fnC3');
-    await Promise.all([fill('fp1', 700), fill('fp3', 600)]); on('fe5', false);
-    say('수정 완료 → 다시 검수'); await wait(1800);
+    N.forEach(n => { on(n, false); $(n).classList.remove('done'); }); [0, 1, 2].forEach(i => $('fp' + i).setAttribute('width', 0));
+    label('fOrT', '작업 분할 · 배분'); label('fCxT', '고칠 점 정리'); label('fGmT', '교차 검증');
+    on('fnMe'); label('fMeT', '문제 정의'); await say('문제 정의');
+    label('fMeT', '해결 방식 설계'); await say('해결 방식 설계');
+    label('fMeT', '작업 지시'); await say('작업 지시');
+    await fly('fe1', 'var(--accent)'); on('fnMe', false);
+    on('fnOr'); await say('작업 분할 · 세션별 배분');
+    await flyAll(['fe2a', 'fe2b', 'fe2c'], '#2ec4a6'); on('fnOr', false);
+    C.forEach(n => on(n)); await say('세션별 병렬 구현');
+    await Promise.all([2600, 3600, 2000].map((ms, i) => bar(i, 0, 1, ms).then(() => on(C[i], false))));
+    await flyAll(['fe3a', 'fe3b', 'fe3c'], '#e8916a');
+    on('fnCx'); await say('1차 검수 · 고칠 점 정리');
+    await fly('fe4', '#d6d6d0'); on('fnCx', false); done('fnCx');
+    on('fnGm'); await say('2차 검수 · 교차 검증');
+    on('fe5'); await fly('fe5', '#7b8cff', 1700); on('fnGm', false); done('fnGm'); on('fe5', false);
+    label('fOrT', '검수 결과 취합'); on('fnOr'); await say('검수 결과 취합 · 보고');
+    await fly('fe6', '#2ec4a6'); on('fnOr', false);
+    label('fMeT', '지적 사항 검토'); on('fnMe'); await say('지적 사항 검토 · 반영할 것만 승인');
+    await fly('fe1', 'var(--accent)'); on('fnMe', false);
+    // only the flagged session (the middle one) goes back: its bar alone rewinds
+    label('fOrT', '재지시'); on('fnOr'); await say('지적받은 부분만 재지시'); await bar(1, 1, .35, 500);
+    await fly('fe2b', '#2ec4a6'); on('fnOr', false); on('fnC1');
+    await bar(1, .35, 1, 1600);
+    // the fix goes through the same two reviews before it comes back
+    await fly('fe3b', '#e8916a'); on('fnC1', false);
+    label('fCxT', '통과'); on('fnCx'); await say('수정본 재검수');
+    await fly('fe4', '#d6d6d0'); on('fnCx', false);
+    label('fGmT', '통과'); on('fnGm'); await say('1 · 2차 재검수 통과');
+    on('fe5'); await fly('fe5', '#7b8cff', 1700); on('fnGm', false); on('fe5', false);
+    label('fOrT', '통과 보고'); on('fnOr'); await say('통과 보고');
+    await fly('fe6', '#2ec4a6'); on('fnOr', false);
+    label('fMeT', '최종 검수'); on('fnMe'); await say('최종 검수 · 직접 실행해 확인'); await say('');
   } };
   // the svg is display:none on phones (the list shows instead), so it never intersects there
   if (!calm) { const fo = new IntersectionObserver(es => { if (es[0].isIntersecting) { fo.disconnect(); run(); } }, { threshold: .4 }); fo.observe(document.querySelector('.flow-svg')); }
