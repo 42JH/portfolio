@@ -242,3 +242,9 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
               radial-gradient(35% 45% at 15% 85%, rgba(110, 90, 255, .12), transparent 70%); filter: blur(10px); }
 .hero, .d-hero { isolation: isolate; overflow: hidden; }
 @media print { body::after { display: none; } }
+
+/* typing */
+.tc { opacity: 0; }
+.tc.on { opacity: 1; }
+.caret { display: inline-block; width: .45em; height: .95em; margin-left: .06em; vertical-align: -.1em; background: var(--accent); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }

@@ -50,7 +50,32 @@
       `<span class="line">${[...part].map(c => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('')}</span>`).join('');
     gsap.from($$('.ch', el), { yPercent: 115, duration: 1.1, ease: 'expo.out', stagger: .045, delay: .45 });
   });
-  gsap.from('.hero .tagline, .hero .desc, .hero .cta, .hero .awards > div, .d-hero .sub, .d-hero .back, .d-hero .label, .d-hero .pill', { y: 24, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: .7 });
+  gsap.from('.hero .cta, .hero .awards > div, .d-hero .sub, .d-hero .back, .d-hero .label, .d-hero .pill', { y: 24, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: .7 });
+
+  /* typing: text appears character by character behind a blinking caret */
+  const caret = document.createElement('span'); caret.className = 'caret';
+  const prep = el => {
+    const walk = n => [...n.childNodes].forEach(c => {
+      if (c.nodeType === 3) { const f = document.createDocumentFragment();
+        [...c.textContent].forEach(ch => { const s = document.createElement('span'); s.className = 'tc'; s.textContent = ch; f.appendChild(s); });
+        c.replaceWith(f); }
+      else if (c.nodeType === 1 && c.tagName !== 'BR') walk(c);
+    });
+    walk(el); return $$('.tc', el);
+  };
+  const typeOut = (chars, ms) => new Promise(done => {
+    let i = 0;
+    (function step() {
+      if (i >= chars.length) return done();
+      const c = chars[i++]; c.classList.add('on'); c.after(caret);
+      setTimeout(step, c.textContent === ' ' ? ms * .4 : /[,.]/.test(c.textContent) ? ms * 7 : ms);
+    })();
+  });
+  const typed = $$('.type').map(el => ({ el, chars: prep(el) }));
+  const T = el => typed.find(t => t.el === el);
+  const tag = $('.hero .tagline.type'), desc = $('.hero .desc.type');
+  if (tag) setTimeout(() => typeOut(T(tag).chars, 55).then(() => desc && typeOut(T(desc).chars, 16)), 1300);
+  $$('.contact .type').forEach(el => ScrollTrigger.create({ trigger: el, start: 'top 75%', once: true, onEnter: () => typeOut(T(el).chars, 30) }));
 
   /* count-up for plain numeric values */
   const num = /^([−-]?)(\d+(?:\.\d+)?)(%|ms|px|개|건|초)?$/;
