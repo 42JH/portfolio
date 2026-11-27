@@ -79,6 +79,7 @@ table.rank tr.me td { color: #c2421f; font-weight: 800; background: #fdf1ec; }
 .statement { font-size: clamp(26px, 3.4vw, 44px); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; max-width: 900px; margin-bottom: clamp(40px, 6vh, 64px); }
 .statement em { font-style: normal; color: var(--accent); }
 .contact-lead { margin-top: 18px; font-size: clamp(30px, 4.4vw, 56px); font-weight: 800; letter-spacing: -.04em; line-height: 1.3; }
+.contact-lead em { font-style: normal; color: var(--accent); }
 .contact .mail { display: block; width: fit-content; margin-top: 24px; font-size: clamp(20px, 2.4vw, 30px); font-weight: 700; border-bottom: 2px solid var(--accent); }
 .about-grid li a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--dim); text-underline-offset: 3px; }
 .about-grid li a:hover { text-decoration-color: var(--accent); }
