@@ -40,7 +40,7 @@
       `<span class="line">${[...part].map(c => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('')}</span>`).join('');
     gsap.from($$('.ch', el), { yPercent: 115, duration: 1.1, ease: 'expo.out', stagger: .045, delay: .45 });
   });
-  gsap.from('.hero .cta, .hero .slogan, .hero .desc, .hero-panel, .awards-row li, .hero .who, .d-hero .sub, .d-hero .back, .d-hero .label, .d-hero .pill', { y: 24, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: .7 });
+  gsap.from('.hero .cta, .hero .slogan, .hero .desc, .awards-row li, .hero .who, .d-hero .sub, .d-hero .back, .d-hero .label, .d-hero .pill', { y: 24, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: .7 });
 
   /* hero headline: lines rise, then the example word cycles through real projects */
   if ($('.mega .in')) {

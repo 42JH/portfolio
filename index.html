@@ -18,7 +18,7 @@
 
 <nav class="nav"><div class="wrap">
   <a class="brand" href="#top">이재훈</a>
-  <ul><li><a href="#projects">Projects</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul>
+  <ul><li><a href="#projects">Projects</a></li><li><a href="#how">How I work</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul>
   <a class="btn" href="Portfolio_LeeJaehun.pdf" download>PDF ↓</a>
 </div></nav>
 
@@ -35,11 +35,6 @@
       <p class="desc">반복되는 작업을 발견하고, AI를 활용해 구현한 뒤, 실제 사용 과정에서 검증하고 개선합니다.</p>
       <div class="cta"><a class="btn solid" href="#projects">프로젝트 보기</a><a class="btn" href="https://github.com/42JH" target="_blank" rel="noopener">GitHub ↗</a></div>
     </div>
-    <a class="hero-panel" id="hp" href="project.html?p=modera">
-      <div class="hp-bar"><i></i><i></i><i></i><span class="label" id="hpTitle">modera — analysis.log</span></div>
-      <div class="hp-body" id="hpBody"></div>
-      <div class="hp-foot"><div><span class="label" id="hpTag">Example 01 / 03</span><b id="hpName">MODERA</b></div><div class="hp-right"><div class="hp-dots" id="hpDots"><i></i><i></i><i></i></div><span class="go" aria-hidden="true">→</span></div></div>
-    </a>
   </div>
   <ul class="awards-row">
     <li><span class="label">01</span><div><b>자율주행 레이싱 대회 전국 우승</b><span>278팀 참가 · 3인 팀 팀장</span></div></li>
@@ -58,6 +53,42 @@
       <p>증상 문장으로 진료과를 추천합니다. 키워드 사전으로 판단이 어려운 경우만 LLM으로 보내 1~3순위 적중률을 51.5%에서 약 83%로 올렸습니다.</p></div>
     <span class="btn">GitHub ↗</span>
   </a>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="sec-head"><h2>How I work</h2><span class="label">AI Orchestration · Orca</span></div>
+  <div class="flow rv">
+    <div class="flow-bar"><i></i><i></i><i></i><span class="label">orca — orchestration</span></div>
+    <svg class="flow-svg" viewBox="0 0 1000 380" role="img" aria-label="작업 지시 후 Claude 세션 3개가 병렬로 구현하고, Codex가 1차 검수, Gemini가 2차 교차 검증한 뒤, 승인하면 각 세션에 수정이 자동 지시되는 흐름">
+      <path class="fe" id="fe1a" d="M160 180 C200 180,200 90,240 90"/>
+      <path class="fe" id="fe1b" d="M160 180 L240 180"/>
+      <path class="fe" id="fe1c" d="M160 180 C200 180,200 270,240 270"/>
+      <path class="fe" id="fe2a" d="M400 90 C440 90,440 180,470 180"/>
+      <path class="fe" id="fe2b" d="M400 180 L470 180"/>
+      <path class="fe" id="fe2c" d="M400 270 C440 270,440 180,470 180"/>
+      <path class="fe" id="fe3" d="M620 180 L670 180"/>
+      <path class="fe" id="fe4" d="M820 180 L860 180"/>
+      <path class="fe loop" id="fe5" d="M925 220 L925 345 Q925 355 915 355 L330 355 Q320 355 320 345 L320 295"/>
+      <text class="fl" x="620" y="372" text-anchor="middle">승인하면 지적받은 세션에 수정 자동 지시</text>
+      <g class="fn" id="fnMe" style="--c:var(--accent)"><rect x="40" y="148" width="120" height="64" rx="12"/><text class="role" x="56" y="172">지시</text><text class="nm" x="56" y="196">이재훈</text></g>
+      <g class="fn" id="fnC1" style="--c:#e8916a"><rect x="240" y="65" width="160" height="50" rx="12"/><text class="role" x="256" y="85">작업자 · 세션 1</text><text class="nm" x="256" y="105">Claude</text><rect class="pb" x="330" y="98" width="56" height="4" rx="2"/><rect class="pf" id="fp1" x="330" y="98" width="0" height="4" rx="2"/></g>
+      <g class="fn" id="fnC2" style="--c:#e8916a"><rect x="240" y="155" width="160" height="50" rx="12"/><text class="role" x="256" y="175">작업자 · 세션 2</text><text class="nm" x="256" y="195">Claude</text><rect class="pb" x="330" y="188" width="56" height="4" rx="2"/><rect class="pf" id="fp2" x="330" y="188" width="0" height="4" rx="2"/></g>
+      <g class="fn" id="fnC3" style="--c:#e8916a"><rect x="240" y="245" width="160" height="50" rx="12"/><text class="role" x="256" y="265">작업자 · 세션 3</text><text class="nm" x="256" y="285">Claude</text><rect class="pb" x="330" y="278" width="56" height="4" rx="2"/><rect class="pf" id="fp3" x="330" y="278" width="0" height="4" rx="2"/></g>
+      <g class="fn" id="fnCx" style="--c:#d6d6d0"><rect x="470" y="140" width="150" height="80" rx="12"/><text class="role" x="486" y="164">1차 검수</text><text class="nm" x="486" y="188">Codex</text><text class="st" x="486" y="208">고칠 점 정리</text></g>
+      <g class="fn" id="fnGm" style="--c:#7b8cff"><rect x="670" y="140" width="150" height="80" rx="12"/><text class="role" x="686" y="164">2차 검수</text><text class="nm" x="686" y="188">Gemini</text><text class="st" x="686" y="208">교차 검증</text></g>
+      <g class="fn" id="fnOk" style="--c:var(--accent)"><rect x="860" y="140" width="130" height="80" rx="12"/><text class="role" x="876" y="164">컨펌</text><text class="nm" x="876" y="188">이재훈</text><text class="st" x="876" y="208" id="fOkT">확인 중</text></g>
+      <g id="fDots"></g>
+    </svg>
+    <ol class="flow-list">
+      <li><b>이재훈</b>작업 지시</li>
+      <li><b>Claude × 3</b>세션별 병렬 구현</li>
+      <li><b>Codex</b>1차 검수 · 고칠 점 정리</li>
+      <li><b>Gemini</b>2차 검수 · 교차 검증</li>
+      <li><b>이재훈</b>검수 보고 확인 후 승인</li>
+      <li><b>Orca</b>지적받은 세션에 수정 자동 지시</li>
+    </ol>
+    <div class="flow-st" id="fSt" aria-hidden="true">지시 → 병렬 구현 → 1차·2차 검수 → 승인 → 자동 재지시</div>
+  </div>
 </div></section>
 
 <section id="about"><div class="wrap">
@@ -111,39 +142,57 @@ document.getElementById('list').innerHTML = PROJECTS.map((p, i) => `
     <div class="nums">${p.stats.map(s => `<div><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div>`).join('')}</div>
     <div class="more"><span class="go" aria-hidden="true">→</span><span>자세히 보기</span></div>
   </a>`).join('');
-// hero: the example word is erased and retyped; the panel follows with that project's proof
-// each example: [prompt or key, value, done?]
-const EX = [
-  { id: 'modera', word: '스크린샷 정리를', file: 'modera — analysis.log', lines: [['> 스크린샷 업로드', ''], ['분류', '쿠폰'], ['제목', '[컴포즈커피] 모바일 금액권 5천원권'], ['유효기간', '2026/08/09'], ['분석 시간', '11초 → 7초', 1]] },
-  { id: 'sia', word: 'PC 조작을', file: 'sia — voice.log', lines: [['> "계산기 켜줄래?"', ''], ['로컬 라우터 판정', '0.36초'], ['실행 완료', '1.60초', 1], ['> "이거 저장해줘"', ''], ['지시어 감지', 'LLM으로 전달']] },
-  { id: 'dva', word: '테스트 전화를', file: 'dva — scenario-test.log', lines: [['> 프롬프트 수정', '"반영 전" 보관'], ['가상 고객 통화 · 접수', '통과'], ['가상 고객 통화 · 조회', '통과'], ['가상 고객 통화 · 취소', '통과'], ['시나리오 10개 통과 시', '통화에 반영', 1]] }
-].map(e => ({ ...e, p: PROJECTS.find(p => p.id === e.id) }));
-const typer = document.getElementById('typer'), hp = document.getElementById('hp'), body = document.getElementById('hpBody');
-const dots = [...document.querySelectorAll('#hpDots i')];
-const showEx = i => {
-  const e = EX[i]; hp.href = `project.html?p=${e.p.id}`; hp.style.setProperty('--pc', e.p.color); typer.style.color = e.p.color;
-  dots.forEach((d, k) => d.classList.toggle('on', k === i)); body.innerHTML = '';
-  document.getElementById('hpTag').textContent = `Example 0${i + 1} / 0${EX.length}`;
-  document.getElementById('hpName').textContent = e.p.name; document.getElementById('hpTitle').textContent = e.file;
-};
-const row = l => { const d = document.createElement('div'); d.className = 'hp-row' + (l[0][0] === '>' ? ' cmd' : '') + (l[2] ? ' ok' : '');
-  d.innerHTML = '<span class="k"></span><span class="v"></span>'; body.appendChild(d); return d; };
-showEx(0);
-if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  EX[0].lines.forEach(l => { const d = row(l); d.children[0].textContent = l[0]; d.children[1].textContent = l[1]; });
-} else {
-  const wait = ms => new Promise(r => setTimeout(r, ms));
+const $ = id => document.getElementById(id);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// hero: the example word is erased and retyped in that project's color
+const EX = [['modera', '스크린샷 정리를'], ['sia', 'PC 조작을'], ['dva', '테스트 전화를']].map(([id, word]) => ({ word, color: PROJECTS.find(p => p.id === id).color }));
+const typer = $('typer');
+typer.style.color = EX[0].color;
+if (!calm) (async () => {
   const typeInto = async (el, txt, ms) => { for (const ch of txt) { el.textContent += ch; await wait(ms); } };
-  const runLog = async i => { for (const l of EX[i].lines) { const d = row(l); await typeInto(d.children[0], l[0], 10); await wait(60); await typeInto(d.children[1], l[1], 9); await wait(110); } };
-  (async () => {
-    let i = 0; await wait(1400);
-    for (;;) {
-      await runLog(i); await wait(1800);
-      for (let t = typer.textContent; t.length; t = t.slice(0, -1)) { typer.textContent = t.slice(0, -1); await wait(25); }
-      i = (i + 1) % EX.length; showEx(i); await wait(200);
-      await typeInto(typer, EX[i].word, 50); await wait(150);
-    }
-  })();
+  for (let i = 0; ; ) {
+    await wait(3200);
+    for (let t = typer.textContent; t.length; t = t.slice(0, -1)) { typer.textContent = t.slice(0, -1); await wait(25); }
+    i = (i + 1) % EX.length; typer.style.color = EX[i].color; await wait(200);
+    await typeInto(typer, EX[i].word, 50);
+  }
+})();
+
+// how I work: the orchestration loop plays once the diagram scrolls into view, then repeats
+{
+  const on = (id, v = true) => $(id).classList.toggle('on', v), done = id => $(id).classList.add('done');
+  const say = t => $('fSt').textContent = t;
+  const anim = (ms, f) => new Promise(res => { const t0 = performance.now();
+    const step = t => { const k = Math.min(1, (t - t0) / ms); f(k); k < 1 ? requestAnimationFrame(step) : res(); }; requestAnimationFrame(step); });
+  const fly = (ids, ms, color) => Promise.all(ids.map(id => {
+    const p = $(id), L = p.getTotalLength(), c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('r', 4.5); c.style.fill = c.style.color = color; $('fDots').appendChild(c);
+    return anim(ms, k => { const pt = p.getPointAtLength((k < .5 ? 2 * k * k : 1 - (2 - 2 * k) ** 2 / 2) * L); c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y); }).then(() => c.remove());
+  }));
+  const fill = (id, ms) => anim(ms, k => $(id).setAttribute('width', 56 * k));
+  const C = ['fnC1', 'fnC2', 'fnC3'], P = ['fp1', 'fp2', 'fp3'], N = ['fnMe', 'fnCx', 'fnGm', 'fnOk', ...C];
+  const run = async () => { for (;;) {
+    N.forEach(n => { on(n, false); $(n).classList.remove('done'); }); P.forEach(p => $(p).setAttribute('width', 0)); $('fOkT').textContent = '확인 중';
+    on('fnMe'); say('작업 지시'); await wait(700);
+    await fly(['fe1a', 'fe1b', 'fe1c'], 700, 'var(--accent)'); on('fnMe', false);
+    C.forEach(n => on(n)); say('Claude 세션 3개가 병렬로 구현');
+    await Promise.all([fill('fp1', 1500), fill('fp2', 2100), fill('fp3', 1200)]);
+    await fly(['fe2a', 'fe2b', 'fe2c'], 700, '#e8916a'); C.forEach(n => on(n, false));
+    on('fnCx'); say('Codex 1차 검수 · 고칠 점 정리'); await wait(1300);
+    await fly(['fe3'], 450, '#d6d6d0'); on('fnCx', false); done('fnCx');
+    on('fnGm'); say('Gemini 2차 검수 · 다른 회사 모델로 교차 검증'); await wait(1300);
+    await fly(['fe4'], 400, '#7b8cff'); on('fnGm', false); done('fnGm');
+    on('fnOk'); say('검수 보고 확인'); await wait(1500);
+    $('fOkT').textContent = '승인 ✓'; say('승인'); await wait(600);
+    // only the sessions the reviewers flagged get sent back
+    on('fe5'); say('지적받은 세션 1 · 3에만 수정 자동 지시'); ['fp1', 'fp3'].forEach(p => $(p).setAttribute('width', 0));
+    await fly(['fe5'], 1100, 'var(--accent)'); on('fnOk', false); done('fnOk'); on('fnC1'); on('fnC3');
+    await Promise.all([fill('fp1', 700), fill('fp3', 600)]); on('fe5', false);
+    say('수정 완료 → 다시 검수'); await wait(1800);
+  } };
+  // the svg is display:none on phones (the list shows instead), so it never intersects there
+  if (!calm) { const fo = new IntersectionObserver(es => { if (es[0].isIntersecting) { fo.disconnect(); run(); } }, { threshold: .4 }); fo.observe(document.querySelector('.flow-svg')); }
 }
 
 // the frame shows whichever project is in the middle of the screen

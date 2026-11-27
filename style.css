@@ -332,9 +332,9 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
 .hero h1.mega .rot span { display: inline-block; box-shadow: inset 0 -.08em 0 var(--accent); }
 .hero h1.mega { font-size: clamp(40px, 5.5vw, 84px); }
 
-/* ===== hero A: statement + live example panel, no dead space ===== */
+/* ===== hero A: statement with a retyped example word ===== */
 .hero { padding: clamp(110px, 15vh, 150px) 0 0; }
-.hero-main { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(28px, 4vw, 56px); align-items: stretch; margin-top: clamp(24px, 4vh, 40px); }
+.hero-main { margin-top: clamp(24px, 4vh, 40px); }
 .hero-left { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; }
 .hero h1.mega { font-size: clamp(42px, 5vw, 76px); line-height: 1.12; letter-spacing: -.05em; margin: 0; }
 .hero h1.mega .line { display: block; overflow: hidden; padding-bottom: .05em; }
@@ -346,35 +346,6 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
 .hero .slogan { font-size: clamp(20px, 1.9vw, 27px); font-weight: 800; letter-spacing: -.03em; }
 .hero .desc { font-size: 16px; color: var(--muted); max-width: 540px; }
 .hero .cta { margin-top: 4px; }
-.hero-panel { --pc: var(--accent); display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--card);
-  box-shadow: 0 40px 100px -50px color-mix(in srgb, var(--pc) 70%, transparent); transition: box-shadow .6s, border-color .4s; }
-.hero-panel:hover { border-color: color-mix(in srgb, var(--pc) 55%, transparent); }
-.hp-bar { display: flex; align-items: center; gap: 7px; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--card2); }
-.hp-bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a3a3f; }
-.hp-bar i:first-child { background: var(--pc); transition: background .4s; }
-.hp-bar .label { margin-left: 10px; text-transform: none; letter-spacing: .04em; }
-.hp-body { flex: 1; min-height: 250px; padding: 22px 22px 10px; font: 14.5px/1.5 var(--mono); }
-.hp-row { display: grid; grid-template-columns: minmax(130px, auto) 1fr; gap: 16px; padding: 7px 0; border-bottom: 1px dashed rgba(237, 236, 231, .07); }
-.hp-row .k { color: var(--muted); }
-.hp-row .v { color: var(--ink); }
-.hp-row.cmd { grid-template-columns: 1fr; }
-.hp-row.cmd .k { color: var(--ink); }
-.hp-row.cmd .v:not(:empty) { color: var(--muted); }
-.hp-row.cmd:has(.v:not(:empty)) { grid-template-columns: minmax(130px, auto) 1fr; }
-.hp-row.ok .v { color: var(--pc); font-weight: 600; }
-.hp-row.ok .v::after { content: "  ✓"; }
-.hp-row:last-child { border-bottom: 0; }
-.hp-row:last-child .v::before { content: ""; }
-.hp-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 22px 18px; border-top: 1px solid var(--line); }
-.hp-foot > div:first-child { display: grid; gap: 2px; }
-.hp-foot .label { color: var(--pc); transition: color .4s; }
-.hp-foot b { font-size: 22px; letter-spacing: -.03em; }
-.hp-right { display: flex; align-items: center; gap: 16px; }
-.hp-dots { display: flex; gap: 6px; }
-.hp-dots i { width: 18px; height: 3px; border-radius: 2px; background: var(--line); transition: width .4s, background .4s; }
-.hp-dots i.on { width: 36px; background: var(--pc); }
-.hero-panel .go { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); transform: rotate(-45deg); transition: transform .45s cubic-bezier(.2, .8, .2, 1), background .3s, color .3s, border-color .3s; }
-.hero-panel:hover .go { transform: rotate(0); background: var(--pc); border-color: var(--pc); color: #0b0b0c; }
 .awards-row { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); margin-top: clamp(32px, 5vh, 48px); border-top: 1px solid var(--line); }
 .awards-row li { display: flex; gap: 14px; padding: 20px 20px 22px 0; }
 .awards-row li + li { padding-left: 20px; border-left: 1px solid var(--line); }
@@ -382,9 +353,40 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
 .awards-row b { display: block; font-size: 16.5px; letter-spacing: -.02em; }
 .awards-row span:not(.label) { font-size: 13.5px; color: var(--muted); }
 @media (max-width: 900px) {
-  .hero-main { grid-template-columns: 1fr; }
-  .hp-body { min-height: 230px; font-size: 13px; }
-  .hp-row { grid-template-columns: 1fr; gap: 0; }
   .awards-row { grid-template-columns: 1fr; }
   .awards-row li + li { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* ===== how I work: orchestration loop drawn as a flow ===== */
+.flow { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--card); }
+.flow-bar { display: flex; align-items: center; gap: 7px; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--card2); }
+.flow-bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a3a3f; }
+.flow-bar i:first-child { background: var(--accent); }
+.flow-bar .label { margin-left: 10px; text-transform: none; letter-spacing: .04em; }
+.flow-svg { display: block; width: 100%; height: auto; }
+.flow-svg .fe { fill: none; stroke: var(--line); stroke-width: 1.4; }
+.flow-svg .loop { stroke-dasharray: 5 6; }
+.flow-svg .loop.on { stroke: var(--accent); animation: flowdash .6s linear infinite; }
+@keyframes flowdash { to { stroke-dashoffset: -11; } }
+.flow-svg .fl, .flow-svg .role, .flow-svg .st { font: 11px var(--mono), var(--sans); }
+.flow-svg .fl, .flow-svg .role { fill: var(--muted); }
+.flow-svg .nm { font: 700 17px var(--sans); letter-spacing: -.02em; fill: var(--ink); }
+.flow-svg .fn > rect:first-child { fill: var(--card2); stroke: var(--line); stroke-width: 1.2; transition: stroke .3s, fill .3s; }
+.flow-svg .fn.on > rect:first-child { stroke: var(--c); fill: color-mix(in srgb, var(--c) 10%, var(--card2)); }
+.flow-svg .fn.on { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--c) 45%, transparent)); }
+.flow-svg .st { fill: var(--c); opacity: 0; transition: opacity .3s; }
+.flow-svg .fn.on .st, .flow-svg .fn.done .st { opacity: 1; }
+.flow-svg .pb { fill: var(--line); }
+.flow-svg .pf { fill: var(--c); }
+.flow-svg circle { filter: drop-shadow(0 0 6px currentColor); }
+.flow-st { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-top: 1px solid var(--line); font: 13px var(--mono), var(--sans); }
+.flow-st::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: blink 1s steps(1) infinite; }
+.flow-list { display: none; list-style: none; counter-reset: f; padding: 8px 20px 12px; }
+.flow-list li { display: grid; grid-template-columns: 22px 92px 1fr; gap: 8px; padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: 14.5px; color: var(--muted); }
+.flow-list li:last-child { border-bottom: 0; }
+.flow-list li::before { counter-increment: f; content: counter(f); font: 12px var(--mono); color: var(--accent); padding-top: 3px; }
+.flow-list b { color: var(--ink); }
+@media (max-width: 640px) {
+  .flow-svg, .flow-st { display: none; }
+  .flow-list { display: block; }
 }
