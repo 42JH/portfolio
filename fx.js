@@ -17,14 +17,14 @@
     $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => { const t = $(a.getAttribute('href')); if (t) { e.preventDefault(); lenis.scrollTo(t, { offset: -80 }); } }));
   }
 
-  /* page transition curtain: covers on leave, lifts on arrival */
+  /* page transition: quiet fade through the background color */
   const cur = document.createElement('div'); cur.className = 'curtain'; document.body.appendChild(cur);
-  gsap.fromTo(cur, { yPercent: 0 }, { yPercent: -100, duration: .9, ease: 'expo.inOut', delay: .05 });
+  gsap.to(cur, { opacity: 0, duration: .5, ease: 'power2.out', delay: .05 });
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href]'); if (!a || a.target === '_blank' || a.hasAttribute('download') || e.metaKey || e.ctrlKey) return;
     const href = a.getAttribute('href'); if (!/^(index|project)\.html/.test(href)) return;
     e.preventDefault();
-    gsap.fromTo(cur, { yPercent: 100 }, { yPercent: 0, duration: .7, ease: 'expo.inOut', onComplete: () => location.href = href });
+    gsap.to(cur, { opacity: 1, duration: .3, ease: 'power2.in', onComplete: () => location.href = href });
   });
 
   /* scroll progress */
