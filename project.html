@@ -87,7 +87,7 @@ document.getElementById('app').innerHTML = `
       </div>
       <div>
         ${evidence(c.evidence)}
-        ${c.log ? `<div class="ev"><span class="label">실제 실행 로그</span><div class="log">${c.log}</div></div>` : ''}
+        ${c.log ? `<div class="ev"><span class="label">Log</span><div class="log">${c.log}</div></div>` : ''}
         ${c.why ? `<div class="ev"><span class="label">${esc(c.whyLabel || 'Why')}</span><p>${esc(c.why)}</p></div>` : ''}
       </div>
     </div>

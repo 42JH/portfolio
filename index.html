@@ -193,7 +193,7 @@ if (!calm) (async () => {
     on('fnOr'); await say('작업 분할 · 세션별 배분');
     await flyAll(['fe2a', 'fe2b', 'fe2c'], '#2ec4a6'); on('fnOr', false);
     C.forEach(n => on(n)); await say('세션별 병렬 구현');
-    await Promise.all([2600, 3600, 2000].map((ms, i) => bar(i, 0, 1, ms).then(() => on(C[i], false))));
+    await Promise.all([1800, 2500, 1400].map((ms, i) => bar(i, 0, 1, ms).then(() => on(C[i], false))));
     await flyAll(['fe3a', 'fe3b', 'fe3c'], '#e8916a');
     on('fnCx'); await say('1차 검수 · 고칠 점 정리');
     await fly('fe4', '#d6d6d0'); on('fnCx', false); done('fnCx');
@@ -206,7 +206,7 @@ if (!calm) (async () => {
     // only the flagged session (the middle one) goes back: its bar alone rewinds
     label('fOrT', '재지시'); on('fnOr'); await say('지적받은 부분만 재지시'); await bar(1, 1, .35, 500);
     await fly('fe2b', '#2ec4a6'); on('fnOr', false); on('fnC1');
-    await bar(1, .35, 1, 1600);
+    await bar(1, .35, 1, 1100);
     // the fix goes through the same two reviews before it comes back
     await fly('fe3b', '#e8916a'); on('fnC1', false);
     label('fCxT', '통과'); on('fnCx'); await say('수정본 재검수');

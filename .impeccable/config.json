@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "kicker-above-heading",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-27T09:55:25.632Z",
+        "reason": "user confirmed: declined removing the small labels above headings after seeing the before/after (2026-11-27)"
+      }
+    ]
+  }
+}

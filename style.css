@@ -4,6 +4,7 @@
   --gut: clamp(16px, 4vw, 56px); --max: 1200px;
   --sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { background: var(--bg); scroll-behavior: smooth; }
@@ -24,7 +25,8 @@ html { scrollbar-color: var(--dim) var(--bg); caret-color: var(--accent); }
 .nav ul { display: flex; gap: 28px; list-style: none; }
 .nav ul a { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
 .nav ul a:hover { color: var(--ink); }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; font-weight: 600; transition: .2s; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; font-weight: 600; transition: border-color .2s ease, background-color .2s ease, color .2s ease, filter .2s ease, scale .16s var(--ease-out); }
+.btn:active, .sblock:active .go { scale: .96; }
 .btn:hover { border-color: var(--ink); }
 .btn.solid { background: var(--accent); border-color: var(--accent); color: #0b0b0c; }
 .btn.solid:hover { filter: brightness(1.08); }
@@ -301,8 +303,8 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
 .sblock .nums b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -.03em; color: var(--ink); }
 .sblock .nums span { font-size: 13px; color: var(--muted); }
 .sblock .more { display: flex; align-items: center; gap: 12px; margin-top: 18px; font-weight: 600; font-size: 15px; }
-.sblock .go { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); transform: rotate(-45deg); transition: transform .45s cubic-bezier(.2, .8, .2, 1), background .3s, border-color .3s, color .3s; }
-.sblock:hover .go { transform: rotate(0); background: var(--pc); border-color: var(--pc); color: #0b0b0c; }
+.sblock .go { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); transform: rotate(-45deg); transition: transform .45s cubic-bezier(.2, .8, .2, 1), background .3s, border-color .3s, color .3s, scale .16s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .sblock:hover .go { transform: rotate(0); background: var(--pc); border-color: var(--pc); color: #0b0b0c; } }
 .sthumb { display: none; position: relative; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; background: var(--card2); margin-bottom: 8px; }
 
 /* about without boxes */
@@ -382,7 +384,7 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
 .flow-svg .pb { fill: var(--line); }
 .flow-svg .pf { fill: var(--c); }
 .flow-st { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-top: 1px solid var(--line); font: 500 14px var(--sans); }
-.flow-st::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: blink 1s steps(1) infinite; }
+.flow-st::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .flow-list { display: none; list-style: none; counter-reset: f; padding: 8px 20px 12px; }
 .flow-list li { display: grid; grid-template-columns: 22px 92px 1fr; gap: 8px; padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: 14.5px; color: var(--muted); }
 .flow-list li:last-child { border-bottom: 0; }
