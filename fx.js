@@ -21,8 +21,11 @@
   const bar = document.createElement('div'); bar.className = 'progress'; document.body.appendChild(bar);
   ScrollTrigger.create({ start: 0, end: 'max', onUpdate: s => bar.style.transform = `scaleX(${s.progress})` });
 
-  /* magnetic buttons */
+  /* cursor glow (decoration, pointer devices only) + magnetic buttons */
   if (fine) {
+    const glow = document.createElement('div'); glow.className = 'glow'; document.body.appendChild(glow);
+    const gx = gsap.quickTo(glow, 'x', { duration: .9, ease: 'power3' }), gy = gsap.quickTo(glow, 'y', { duration: .9, ease: 'power3' });
+    addEventListener('pointermove', e => { gx(e.clientX); gy(e.clientY); }, { passive: true });
     $$('.btn').forEach(b => {
       const qx = gsap.quickTo(b, 'x', { duration: .5, ease: 'power3' }), qy = gsap.quickTo(b, 'y', { duration: .5, ease: 'power3' });
       b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); qx((e.clientX - r.left - r.width / 2) * .3); qy((e.clientY - r.top - r.height / 2) * .3); });
