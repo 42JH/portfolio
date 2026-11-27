@@ -93,6 +93,7 @@ document.getElementById('app').innerHTML = `
     </div>
     ${c.demo ? `<div class="demo">${[c.demo.a, c.demo.b].map(d => `<figure><img src="${d[0]}" alt="${esc(d[1])}" loading="lazy"><figcaption><b>${esc(d[1])}</b>${esc(d[2])}</figcaption></figure>`).join('')}</div>
       <div class="ev demo-note"><span class="label">Why</span><p>${esc(c.demo.note)}</p></div>` : ''}
+    ${c.shots ? `<div class="cshots">${c.shots.map(s => `<figure><img src="${s[0]}" alt="${esc(s[1])}" loading="lazy"><figcaption>${esc(s[1])}</figcaption></figure>`).join('')}</div>` : ''}
   </article>`).join('')}
 </div></section>
 
