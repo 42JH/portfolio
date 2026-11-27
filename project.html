@@ -7,6 +7,7 @@
 <meta name="theme-color" content="#0b0b0c">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -47,7 +48,7 @@ document.getElementById('app').innerHTML = `
 <section class="d-hero"><div class="wrap">
   <a class="back" href="index.html#projects">← 전체 프로젝트</a>
   <div><span class="label">Project ${p.no} · ${esc(p.tag)}</span>${p.award ? ` <span class="pill">${esc(p.award)}</span>` : ''}</div>
-  <h1>${esc(p.name)}</h1>
+  <h1 class="split">${esc(p.name)}</h1>
   <p class="sub">${esc(p.title)}</p>
   ${p.cover ? `<div class="cover"><img src="${p.cover}" alt="${esc(p.name)} 표지"></div>`
     : `<div class="cover race"><img src="img/airsim_logo.webp" alt="대회 로고"><div><span class="label" style="color:#6b6a66">League final ranking · 278 teams</span><div style="height:12px"></div>${rank(p.ranking)}</div></div>`}
@@ -109,5 +110,9 @@ document.getElementById('app').innerHTML = `
 const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))), { rootMargin: '0px 0px -10% 0px' });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="fx.js"></script>
 </body>
 </html>

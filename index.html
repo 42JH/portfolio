@@ -11,6 +11,7 @@
 <meta name="theme-color" content="#0b0b0c">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,7 +25,7 @@
 <header class="hero" id="top"><div class="wrap hero-grid">
   <div>
     <span class="label">AI Engineer · 2026 Portfolio</span>
-    <h1>이재훈</h1>
+    <h1 class="split">이재훈</h1>
     <p class="tagline">문제를 발견하고,<br><em>빠르게 해결</em>합니다.</p>
     <p class="desc">반복되는 작업을 발견하고, AI를 활용해 구현한 뒤, 실제 사용 과정에서 검증하고 개선합니다.</p>
     <div class="cta"><a class="btn solid" href="#projects">프로젝트 보기</a><a class="btn" href="https://github.com/42JH" target="_blank" rel="noopener">GitHub ↗</a></div>
@@ -35,6 +36,8 @@
     <div><b>교육과정 성적우수상</b><span>SSAFY 1학기 종합성적 2등</span></div>
   </div>
 </div></header>
+
+<div class="marquee" aria-hidden="true"><div class="track"><span>자율주행 레이싱 대회 <b>전국 우승</b></span><i>✦</i><span>MODERA 분류 정확도 <b>92.3%</b></span><i>✦</i><span>SIA 시선 오차 <b>228→156px</b></span><i>✦</i><span>Dver·Dva 불만 판정 정밀도 <b>96%</b></span><i>✦</i><span>팀 프로젝트 <b>우수상 (1위)</b></span><i>✦</i><span>IT-doc 적중률 <b>51.5→83%</b></span><i>✦</i><span>자율주행 레이싱 대회 <b>전국 우승</b></span><i>✦</i><span>MODERA 분류 정확도 <b>92.3%</b></span><i>✦</i><span>SIA 시선 오차 <b>228→156px</b></span><i>✦</i><span>Dver·Dva 불만 판정 정밀도 <b>96%</b></span><i>✦</i><span>팀 프로젝트 <b>우수상 (1위)</b></span><i>✦</i><span>IT-doc 적중률 <b>51.5→83%</b></span><i>✦</i></div></div>
 
 <section id="projects"><div class="wrap">
   <div class="sec-head"><h2>Projects</h2><span class="label">카드를 누르면 상세 내용을 볼 수 있습니다</span></div>
@@ -99,5 +102,9 @@ document.getElementById('cards').innerHTML = PROJECTS.map(p => `
 const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))), { rootMargin: '0px 0px -10% 0px' });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="fx.js"></script>
 </body>
 </html>
