@@ -23,7 +23,7 @@
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
-  <p class="who"><b>이재훈</b><span>AI Engineer</span></p>
+  <p class="who"><span>AI Engineer</span></p>
   <div class="hero-main">
     <div class="hero-left">
       <h1 class="mega" aria-label="반복되는 일을 AI로 덜어냅니다.">
@@ -134,14 +134,14 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
 } else {
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const typeInto = async (el, txt, ms) => { for (const ch of txt) { el.textContent += ch; await wait(ms); } };
-  const runLog = async i => { for (const l of EX[i].lines) { const d = row(l); await typeInto(d.children[0], l[0], 22); await wait(120); await typeInto(d.children[1], l[1], 18); await wait(260); } };
+  const runLog = async i => { for (const l of EX[i].lines) { const d = row(l); await typeInto(d.children[0], l[0], 10); await wait(60); await typeInto(d.children[1], l[1], 9); await wait(110); } };
   (async () => {
-    let i = 0; await wait(2600);
+    let i = 0; await wait(1400);
     for (;;) {
-      await runLog(i); await wait(2600);
-      for (let t = typer.textContent; t.length; t = t.slice(0, -1)) { typer.textContent = t.slice(0, -1); await wait(40); }
+      await runLog(i); await wait(1800);
+      for (let t = typer.textContent; t.length; t = t.slice(0, -1)) { typer.textContent = t.slice(0, -1); await wait(25); }
       i = (i + 1) % EX.length; showEx(i); await wait(200);
-      await typeInto(typer, EX[i].word, 80); await wait(300);
+      await typeInto(typer, EX[i].word, 50); await wait(150);
     }
   })();
 }
