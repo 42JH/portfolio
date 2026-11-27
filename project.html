@@ -50,7 +50,7 @@ document.getElementById('app').innerHTML = `
 <section class="d-hero"><div class="wrap">
   <a class="back" href="index.html#projects">← 전체 프로젝트</a>
   <div><span class="label">Project ${p.no} · ${esc(p.tag)}</span>${p.award ? ` <span class="pill">${esc(p.award)}</span>` : ''}</div>
-  <h1 class="split">${esc(p.name)}</h1>
+  <h1 class="ptitle">${esc(p.name)}</h1>
   <p class="sub">${esc(p.title)}</p>
   ${p.cover ? `<div class="cover"><img src="${p.cover}" alt="${esc(p.name)} 표지"></div>`
     : `<div class="cover race"><img src="img/airsim_logo.webp" alt="대회 로고"><div><span class="label" style="color:#6b6a66">League final ranking · 278 teams</span><div style="height:12px"></div>${rank(p.ranking)}</div></div>`}

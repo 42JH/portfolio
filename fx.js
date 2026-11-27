@@ -17,16 +17,6 @@
     $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => { const t = $(a.getAttribute('href')); if (t) { e.preventDefault(); lenis.scrollTo(t, { offset: -80 }); } }));
   }
 
-  /* page transition: quiet fade through the background color */
-  const cur = document.createElement('div'); cur.className = 'curtain'; document.body.appendChild(cur);
-  gsap.to(cur, { opacity: 0, duration: .5, ease: 'power2.out', delay: .05 });
-  document.addEventListener('click', e => {
-    const a = e.target.closest('a[href]'); if (!a || a.target === '_blank' || a.hasAttribute('download') || e.metaKey || e.ctrlKey) return;
-    const href = a.getAttribute('href'); if (!/^(index|project)\.html/.test(href)) return;
-    e.preventDefault();
-    gsap.to(cur, { opacity: 1, duration: .3, ease: 'power2.in', onComplete: () => location.href = href });
-  });
-
   /* scroll progress */
   const bar = document.createElement('div'); bar.className = 'progress'; document.body.appendChild(bar);
   ScrollTrigger.create({ start: 0, end: 'max', onUpdate: s => bar.style.transform = `scaleX(${s.progress})` });
@@ -50,7 +40,7 @@
       `<span class="line">${[...part].map(c => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('')}</span>`).join('');
     gsap.from($$('.ch', el), { yPercent: 115, duration: 1.1, ease: 'expo.out', stagger: .045, delay: .45 });
   });
-  gsap.from('.hero .cta, .hero .awards > div, .d-hero .sub, .d-hero .back, .d-hero .label, .d-hero .pill', { y: 24, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: .7 });
+  gsap.from('.hero .cta, .hero .awards-list li, .hero-top, .d-hero .sub, .d-hero .back, .d-hero .label, .d-hero .pill', { y: 24, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: .7 });
 
   /* typing: text appears character by character behind a blinking caret */
   const caret = document.createElement('span'); caret.className = 'caret';
@@ -77,6 +67,21 @@
   if (tag) setTimeout(() => typeOut(T(tag).chars, 55).then(() => desc && typeOut(T(desc).chars, 16)), 1300);
   $$('.contact .type').forEach(el => ScrollTrigger.create({ trigger: el, start: 'top 75%', once: true, onEnter: () => typeOut(T(el).chars, 30) }));
 
+  /* marquee: drifts on its own, can be dragged or flicked either way */
+  const mq = $('.marquee .track');
+  if (mq) {
+    const box = mq.parentElement; let x = 0, vel = 0, drag = false, last = 0;
+    box.addEventListener('pointerdown', e => { drag = true; last = e.clientX; vel = 0; box.setPointerCapture(e.pointerId); box.classList.add('grab'); });
+    box.addEventListener('pointermove', e => { if (!drag) return; const d = e.clientX - last; last = e.clientX; x += d; vel = d; });
+    const up = () => { drag = false; box.classList.remove('grab'); };
+    box.addEventListener('pointerup', up); box.addEventListener('pointercancel', up);
+    gsap.ticker.add(() => {
+      if (!drag) { x += vel - .7; vel *= .94; }
+      const w = mq.scrollWidth / 2; x = ((x % w) - w) % w;
+      mq.style.transform = `translate3d(${x}px,0,0)`;
+    });
+  }
+
   /* count-up for plain numeric values */
   const num = /^([−-]?)(\d+(?:\.\d+)?)(%|ms|px|개|건|초)?$/;
   $$('.stats b, .pcard .nums b, .result b, .perf b').forEach(el => {
@@ -88,10 +93,9 @@
   });
 
   /* images: wipe in from below, then drift slightly */
-  $$('.pcard .thumb, .cover, .demo figure, .shots figure').forEach(el => {
+  $$('.demo figure, .shots figure').forEach(el => {
     gsap.fromTo(el, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: 1.3, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%' } });
   });
-  $$('.cover > img').forEach(img => gsap.fromTo(img, { scale: 1.12, yPercent: -4 }, { scale: 1.02, yPercent: 4, ease: 'none', scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: true } }));
 
   /* evidence bars fill when seen */
   $$('.bar .fl').forEach(f => gsap.from(f, { width: 0, duration: 1.4, ease: 'power3.out', scrollTrigger: { trigger: f, start: 'top 92%' } }));
