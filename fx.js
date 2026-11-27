@@ -31,14 +31,11 @@
   const bar = document.createElement('div'); bar.className = 'progress'; document.body.appendChild(bar);
   ScrollTrigger.create({ start: 0, end: 'max', onUpdate: s => bar.style.transform = `scaleX(${s.progress})` });
 
-  /* cursor glow + VIEW bubble on cards */
+  /* cursor glow */
   if (fine) {
     const glow = document.createElement('div'); glow.className = 'glow'; document.body.appendChild(glow);
-    const view = document.createElement('div'); view.className = 'view'; view.innerHTML = '<span>VIEW</span>'; document.body.appendChild(view);
     const gx = gsap.quickTo(glow, 'x', { duration: .9, ease: 'power3' }), gy = gsap.quickTo(glow, 'y', { duration: .9, ease: 'power3' });
-    const vx = gsap.quickTo(view, 'x', { duration: .35, ease: 'power3' }), vy = gsap.quickTo(view, 'y', { duration: .35, ease: 'power3' });
-    addEventListener('pointermove', e => { gx(e.clientX); gy(e.clientY); vx(e.clientX); vy(e.clientY); }, { passive: true });
-    document.addEventListener('pointerover', e => view.classList.toggle('on', !!e.target.closest('.pcard, .pager a')));
+    addEventListener('pointermove', e => { gx(e.clientX); gy(e.clientY); }, { passive: true });
     // magnetic buttons
     $$('.btn').forEach(b => {
       const qx = gsap.quickTo(b, 'x', { duration: .5, ease: 'power3' }), qy = gsap.quickTo(b, 'y', { duration: .5, ease: 'power3' });

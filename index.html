@@ -89,7 +89,7 @@
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 document.getElementById('cards').innerHTML = PROJECTS.map(p => `
   <a class="pcard rv" href="project.html?p=${p.id}">
-    <div class="thumb">${p.cover ? `<img src="${p.cover}" alt="${esc(p.name)} 표지" loading="lazy">`
+    <div class="thumb"><span class="go" aria-hidden="true">→</span>${p.cover ? `<img src="${p.cover}" alt="${esc(p.name)} 표지" loading="lazy">`
       : `<div class="race-thumb"><img src="img/airsim_logo.webp" alt=""><table class="rank">${p.ranking.map((r, i) => `<tr${i ? '' : ' class="me"'}><td>${r[0]}</td><td>${esc(r[1])}</td><td>${r[2]}</td></tr>`).join('')}</table></div>`}</div>
     <div class="body">
       <div class="top"><span class="label">${p.no} · ${esc(p.tag)}</span>${p.award ? `<span class="pill">${esc(p.award)}</span>` : ''}</div>
