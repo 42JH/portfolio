@@ -43,16 +43,8 @@
   gsap.from('.hero .cta, .hero .awards-list li, .hero .who, .d-hero .sub, .d-hero .back, .d-hero .label, .d-hero .pill', { y: 24, opacity: 0, duration: .9, ease: 'power3.out', stagger: .07, delay: .7 });
 
   /* hero headline: lines rise, then the example word cycles through real projects */
-  const rot = $('.mega .rot span');
-  if (rot) {
+  if ($('.mega .in')) {
     gsap.from('.mega .in', { yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: .14, delay: .4 });
-    const words = ['일을', '스크린샷 정리를', 'PC 조작을', '테스트 전화를']; let k = 0;
-    setInterval(() => {
-      k = (k + 1) % words.length;
-      gsap.timeline().to(rot, { yPercent: -110, duration: .45, ease: 'power3.in' })
-        .call(() => { rot.textContent = words[k]; })
-        .fromTo(rot, { yPercent: 110 }, { yPercent: 0, duration: .6, ease: 'expo.out' });
-    }, 2600);
   }
 
   /* typing: text appears character by character behind a blinking caret */

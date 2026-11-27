@@ -330,3 +330,4 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
 .hero h1.mega .in { display: inline-block; }
 .hero h1.mega .rot { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .04em; }
 .hero h1.mega .rot span { display: inline-block; box-shadow: inset 0 -.08em 0 var(--accent); }
+.hero h1.mega { font-size: clamp(40px, 5.5vw, 84px); }
