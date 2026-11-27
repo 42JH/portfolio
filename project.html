@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로젝트 · 이재훈</title>
+<meta name="theme-color" content="#0b0b0c">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="index.html">이재훈</a>
+  <ul><li><a href="#overview">개요</a></li><li><a href="#cases">문제 해결</a></li><li><a href="#retro">회고</a></li></ul>
+  <a class="btn" href="Portfolio_LeeJaehun.pdf" download>PDF ↓</a>
+</div></nav>
+
+<main id="app"></main>
+
+<footer><div class="wrap"><span class="label">© 2026 Lee Jae Hun</span><a class="label" href="index.html#projects">← 전체 프로젝트</a></div></footer>
+
+<script src="data.js"></script>
+<script>
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const id = new URLSearchParams(location.search).get('p');
+const i = Math.max(0, PROJECTS.findIndex(p => p.id === id));
+const p = PROJECTS[i], prev = PROJECTS[(i + PROJECTS.length - 1) % PROJECTS.length], next = PROJECTS[(i + 1) % PROJECTS.length];
+document.title = `${p.name} · 이재훈`;
+
+const rank = rows => `<table class="rank">${rows.map((r, k) => `<tr${k ? '' : ' class="me"'}><td>${r[0]}</td><td>${esc(r[1])}</td><td>${r[2]}</td></tr>`).join('')}</table>`;
+const pipe = nodes => `<div class="pipe">${nodes.map(n => `<div class="n${n[2] ? ' me' : ''}">${esc(n[0])}<small>${esc(n[1])}</small></div>`).join('<span class="ln"></span>')}</div>`;
+const kv = rows => `<ul class="kv">${rows.map(r => `<li><b>${esc(r[0])}</b><span>${esc(r[1])}</span></li>`).join('')}</ul>`;
+
+function evidence(e) {
+  if (!e) return '';
+  let body = '';
+  if (e.type === 'bars') body = e.rows.map(r => `<div class="bar${r[2] ? ' on' : ''}"><div class="cap"><span>${esc(r[0])}</span><b>${r[1]}${e.unit}</b></div><div class="tr"><div class="fl" style="width:${Math.round(r[1] / e.max * 100)}%"></div></div></div>`).join('') + (e.foot ? `<p class="foot">${esc(e.foot)}</p>` : '');
+  if (e.type === 'list') body = `<div class="rows">${e.rows.map(r => `<div><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join('')}</div>`;
+  if (e.type === 'flow') body = `<div class="flow">${e.rows.map(r => `<div${r[2] ? ' class="me"' : ''}>${esc(r[0])}${r[1] ? `<small>${esc(r[1])}</small>` : ''}</div>`).join('')}</div>`;
+  return `<div class="ev"><span class="label">${esc(e.title)}</span>${body}</div>`;
+}
+
+const o = p.overview;
+document.getElementById('app').innerHTML = `
+<section class="d-hero"><div class="wrap">
+  <a class="back" href="index.html#projects">← 전체 프로젝트</a>
+  <div><span class="label">Project ${p.no} · ${esc(p.tag)}</span>${p.award ? ` <span class="pill">${esc(p.award)}</span>` : ''}</div>
+  <h1>${esc(p.name)}</h1>
+  <p class="sub">${esc(p.title)}</p>
+  ${p.cover ? `<div class="cover"><img src="${p.cover}" alt="${esc(p.name)} 표지"></div>`
+    : `<div class="cover race"><img src="img/airsim_logo.webp" alt="대회 로고"><div><span class="label" style="color:#6b6a66">League final ranking · 278 teams</span><div style="height:12px"></div>${rank(p.ranking)}</div></div>`}
+  <div class="info">${p.info.map(r => `<div><span class="label">${esc(r[0])}</span><span>${esc(r[1])}</span></div>`).join('')}</div>
+  <div class="stats">${p.stats.map(s => `<div><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div>`).join('')}</div>
+</div></section>
+
+<section id="overview"><div class="wrap">
+  <div class="sec-head"><h2>프로젝트 개요</h2></div>
+  ${o.pipe ? pipe(o.pipe) : ''}
+  ${o.lead ? `<p style="font-size:clamp(19px,2vw,24px);font-weight:700;letter-spacing:-.02em;margin-bottom:24px">${esc(o.lead)}</p>` : ''}
+  ${o.parts ? `<div class="cols3">${o.parts.map(x => `<div class="box rv"><h4>${esc(x[0])}</h4><p>${esc(x[1])}</p></div>`).join('')}</div><p style="color:var(--muted);margin-top:20px">${esc(o.note)}</p>` : ''}
+  ${o.why ? `<div class="cols">
+      <div class="box rv"><span class="label">기술 선택 이유</span>${kv(o.why)}</div>
+      ${o.mine ? `<div class="box rv"><span class="label">내가 맡은 일</span>${kv(o.mine)}</div>`
+        : `<figure class="box rv"><span class="label">Analysis example</span><img src="${o.figure[0]}" alt="" style="margin:0 auto;border-radius:10px;max-height:340px"><figcaption>${esc(o.figure[1])}</figcaption></figure>`}
+    </div>` : ''}
+  ${o.shots ? `<div class="shots">${o.shots.map(s => `<figure><img src="${s[0]}" alt="${esc(s[1])} 화면" loading="lazy"><figcaption>${esc(s[1])}</figcaption></figure>`).join('')}</div>` : ''}
+</div></section>
+
+<section id="cases"><div class="wrap">
+  <div class="sec-head"><h2>문제 해결</h2><span class="label">${p.cases.length} cases</span></div>
+  ${p.cases.map((c, k) => `
+  <article class="case rv">
+    <h3><span class="label">0${k + 1}</span>${esc(c.title)}</h3>
+    <div class="case-grid">
+      <div>
+        <div class="steps">
+          <div><span class="label">Problem</span><p>${esc(c.problem)}</p></div>
+          <div><span class="label">Cause</span><p>${esc(c.cause)}</p></div>
+          <div><span class="label">Solution</span><p>${esc(c.solution)}</p></div>
+        </div>
+        <div class="result"><span class="label">Result</span><b>${esc(c.result[0])}</b><span>${esc(c.result[1])}</span></div>
+      </div>
+      <div>
+        ${evidence(c.evidence)}
+        ${c.log ? `<div class="ev"><span class="label">실제 실행 로그</span><div class="log">${c.log}</div></div>` : ''}
+        ${c.why ? `<div class="ev"><span class="label">${esc(c.whyLabel || 'Why')}</span><p>${esc(c.why)}</p></div>` : ''}
+      </div>
+    </div>
+    ${c.demo ? `<div class="demo">${[c.demo.a, c.demo.b].map(d => `<figure><img src="${d[0]}" alt="${esc(d[1])}" loading="lazy"><figcaption><b>${esc(d[1])}</b>${esc(d[2])}</figcaption></figure>`).join('')}</div>
+      <div class="ev demo-note"><span class="label">Why</span><p>${esc(c.demo.note)}</p></div>` : ''}
+  </article>`).join('')}
+</div></section>
+
+<section id="retro"><div class="wrap">
+  <div class="sec-head"><h2>회고</h2></div>
+  <div class="cols3 retro">${p.retro.map((r, k) => `<div class="box rv"><span class="n">0${k + 1}</span><h4 style="margin-top:10px">${esc(r[0])}</h4><p>${esc(r[1])}</p></div>`).join('')}</div>
+  ${p.next ? `<div class="box rv" style="margin-top:20px"><span class="label">Next</span><p>${esc(p.next)}</p></div>` : ''}
+  ${p.perf ? `<div class="box rv" style="margin-top:20px"><span class="label">${esc(p.perf.title)}</span><div class="perf">${p.perf.rows.map(r => `<div><b>${esc(r[0])}</b><span style="color:var(--muted);font-size:14px">${esc(r[1])}</span></div>`).join('')}</div></div>` : ''}
+  ${p.links.length ? `<div class="links" style="margin-top:36px">${p.links.map(l => `<a class="btn${l[0] === 'GitHub' ? '' : ' solid'}" href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])} ↗</a>`).join('')}</div>` : ''}
+</div></section>
+
+<section><div class="wrap pager">
+  <a href="project.html?p=${prev.id}"><span class="label">← 이전 프로젝트</span><b>${esc(prev.name)}</b></a>
+  <a class="nx" href="project.html?p=${next.id}"><span class="label">다음 프로젝트 →</span><b>${esc(next.name)}</b></a>
+</div></section>`;
+
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))), { rootMargin: '0px 0px -10% 0px' });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
