@@ -76,7 +76,7 @@ table.rank tr.me td { color: #c2421f; font-weight: 800; background: #fdf1ec; }
 .skills dd { color: var(--ink); }
 
 /* contact */
-.statement { font-size: clamp(26px, 3.4vw, 44px); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; max-width: 900px; margin-bottom: clamp(40px, 6vh, 64px); }
+.statement { font-size: clamp(26px, 3.4vw, 44px); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; max-width: 900px; margin-top: clamp(64px, 9vh, 104px); }
 .statement em { font-style: normal; color: var(--accent); }
 .contact .mail { display: block; width: fit-content; margin-top: 18px; font-size: clamp(30px, 4.4vw, 56px); font-weight: 800; letter-spacing: -.03em; border-bottom: 2px solid var(--accent); }
 .contact .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }

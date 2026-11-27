@@ -66,7 +66,7 @@
   const T = el => typed.find(t => t.el === el);
   const tag = $('.hero .tagline.type'), desc = $('.hero .desc.type');
   setTimeout(() => [tag, desc].filter(Boolean).reduce((p, el) => p.then(() => typeOut(T(el).chars, el === tag ? 55 : 28)), Promise.resolve()), 1500);
-  $$('.contact .type').forEach(el => ScrollTrigger.create({ trigger: el, start: 'top 75%', once: true, onEnter: () => typeOut(T(el).chars, 30) }));
+  $$('.statement.type, .contact .type').forEach(el => ScrollTrigger.create({ trigger: el, start: 'top 75%', once: true, onEnter: () => typeOut(T(el).chars, 30) }));
 
   /* marquee: drifts on its own, can be dragged or flicked either way */
   const mq = $('.marquee .track');
