@@ -72,6 +72,11 @@ img{display:block;max-width:100%}
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--gut) clamp(24px,4vh,48px);overflow:hidden}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%}
+#gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s}
+.has-3d #gl{opacity:1}
+.has-3d #field{display:none}
+.hero,.marquee,main{position:relative;z-index:1}
+@media print{#gl{display:none}}
 .hud{position:absolute;top:76px;left:var(--gut);right:var(--gut);display:flex;justify-content:space-between;gap:24px;pointer-events:none}
 .hud div{display:grid;gap:4px}
 .hud b{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--ink);letter-spacing:.06em}
@@ -725,5 +730,7 @@ details.case[open] summary .plus{transform:rotate(45deg)}
   gsap.from('.contact .closing, .contact .big', { yPercent: 30, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.contact', start: 'top 70%' } });
 })();
 </script>
+<canvas id="gl" aria-hidden="true"></canvas>
+<script type="module" src="particles.js"></script>
 </body>
 </html>
