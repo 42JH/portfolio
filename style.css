@@ -1,6 +1,6 @@
 :root {
   --bg: #0b0b0c; --card: #141416; --card2: #1b1b1e; --ink: #edece7; --muted: #92918b; --dim: #5c5b57;
-  --line: rgba(237, 236, 231, .1); --accent: #ff5a1f; --accent-soft: rgba(255, 90, 31, .12);
+  --line: rgba(237, 236, 231, .1); --accent: #ff5a1f; --accent-soft: color-mix(in srgb, var(--accent) 13%, transparent);
   --gut: clamp(16px, 4vw, 56px); --max: 1200px;
   --sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
@@ -224,3 +224,21 @@ html.fx { scroll-behavior: auto; }
 .pcard .go { position: absolute; top: 16px; right: 16px; z-index: 2; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; font-weight: 700; color: var(--ink); background: rgba(11, 11, 12, .55); border: 1px solid rgba(237, 236, 231, .25); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transform: rotate(-45deg); transition: transform .45s cubic-bezier(.2, .8, .2, 1), background .3s, color .3s, border-color .3s; }
 .pcard:hover .go { transform: rotate(0); background: var(--accent); border-color: var(--accent); color: #0b0b0c; }
 .pcard:hover .thumb img { transform: scale(1.05); }
+
+/* ---------- project colors ---------- */
+.pcard { --pc: var(--accent); }
+.pcard .nums b { color: var(--pc); }
+.pcard .pill { background: color-mix(in srgb, var(--pc) 15%, transparent); color: var(--pc); }
+.pcard:hover { border-color: color-mix(in srgb, var(--pc) 60%, transparent); box-shadow: 0 30px 80px -30px color-mix(in srgb, var(--pc) 45%, transparent); }
+.pcard:hover .go { background: var(--pc); border-color: var(--pc); }
+.pcard:hover .more i { color: var(--pc); }
+.pcard .body::before { content: ""; display: block; width: 28px; height: 3px; border-radius: 2px; background: var(--pc); margin-bottom: 2px; }
+
+/* ---------- background texture ---------- */
+body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.hero::before, .d-hero::before { content: ""; position: absolute; inset: -20% -10% auto -10%; height: 120%; z-index: -1; pointer-events: none;
+  background: radial-gradient(40% 50% at 78% 30%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
+              radial-gradient(35% 45% at 15% 85%, rgba(110, 90, 255, .12), transparent 70%); filter: blur(10px); }
+.hero, .d-hero { isolation: isolate; overflow: hidden; }
+@media print { body::after { display: none; } }

@@ -1,7 +1,7 @@
 // All project content (from the portfolio PDF). index.html lists these, project.html renders one.
 window.PROJECTS = [
   {
-    id: 'airsim', no: '01', name: 'AirSim Racing', tag: '자율주행 알고리즘',
+    id: 'airsim', color: '#ff6a3d', no: '01', name: 'AirSim Racing', tag: '자율주행 알고리즘',
     title: '자율주행 알고리즘으로 완주 시간을 겨루는 전국 대회',
     cover: null, award: '전국 우승 · 278팀',
     info: [['기간', '2026.05 ~ 07 (5주)'], ['역할', '3인 팀 팀장, 주행 알고리즘 전담'], ['기여', '서버 제출 122회, 로컬 테스트 200회+'], ['스택', 'Python, Microsoft AirSim']],
@@ -30,7 +30,7 @@ window.PROJECTS = [
     links: []
   },
   {
-    id: 'modera', no: '02', name: 'MODERA', tag: 'LLM · 검색',
+    id: 'modera', color: '#f5b81c', no: '02', name: 'MODERA', tag: 'LLM · 검색',
     title: '스크린샷을 AI가 자동으로 분류하고 자연어로 검색하는 안드로이드 앱',
     cover: 'img/modera_cover.webp', award: '팀 프로젝트 우수상 (1위)',
     info: [['기간', '2026.07 ~ 08 (6주)'], ['역할', '6인 팀 중 AI 담당 (2인)'], ['기여', '분석 파이프라인, 하이브리드 검색'], ['수상', '팀 프로젝트 우수상 (1위)']],
@@ -74,7 +74,7 @@ window.PROJECTS = [
     links: [['GitHub', 'https://github.com/42JH/MODERA#readme']]
   },
   {
-    id: 'sia', no: '03', name: 'SIA', tag: '멀티모달 · 음성',
+    id: 'sia', color: '#7b8cff', no: '03', name: 'SIA', tag: '멀티모달 · 음성',
     title: '사용자가 보고 있는 화면 위치까지 파악해 PC를 조작하는 데스크톱 AI 비서',
     cover: 'img/sia_banner.webp', award: '최종 발표',
     info: [['기간', '2026.08 ~ 09 (7주)'], ['역할', 'AI 담당 (3인), 최종 발표'], ['기여', 'Jira 이슈 346건 중 105건'], ['스택', 'PyTorch, mediapipe, faster-whisper, Gemini']],
@@ -121,7 +121,7 @@ window.PROJECTS = [
     links: [['시연 영상', 'https://github.com/42JH/SIA/blob/main/assets/demo.mp4'], ['GitHub', 'https://github.com/42JH/SIA#readme']]
   },
   {
-    id: 'dva', no: '04', name: 'Dver·Dva', tag: 'AI 품질 · 웹',
+    id: 'dva', color: '#2ec4a6', no: '04', name: 'Dver·Dva', tag: 'AI 품질 · 웹',
     title: '전화로 택배를 접수하는 AI 상담원과 운영자용 관리자 웹 (기업 협업)',
     cover: 'img/dva_cover.webp', award: '기업 협업',
     info: [['기간', '2026.10 ~ 11 (6주)'], ['역할', '6인 팀, 관리자 웹 리드'], ['기여', 'MR 752건 중 288건'], ['스택', 'React, TypeScript, Nginx, Python']],

@@ -29,6 +29,8 @@ const id = new URLSearchParams(location.search).get('p');
 const i = Math.max(0, PROJECTS.findIndex(p => p.id === id));
 const p = PROJECTS[i], prev = PROJECTS[(i + PROJECTS.length - 1) % PROJECTS.length], next = PROJECTS[(i + 1) % PROJECTS.length];
 document.title = `${p.name} · 이재훈`;
+document.documentElement.style.setProperty('--accent', p.color);
+document.querySelector('meta[name=theme-color]').content = '#0b0b0c';
 
 const rank = rows => `<table class="rank">${rows.map((r, k) => `<tr${k ? '' : ' class="me"'}><td>${r[0]}</td><td>${esc(r[1])}</td><td>${r[2]}</td></tr>`).join('')}</table>`;
 const pipe = nodes => `<div class="pipe">${nodes.map(n => `<div class="n${n[2] ? ' me' : ''}">${esc(n[0])}<small>${esc(n[1])}</small></div>`).join('<span class="ln"></span>')}</div>`;
